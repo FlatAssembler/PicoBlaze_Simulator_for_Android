@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">PicoBlaze Simulator</string>
+    <string name="picoblaze_simulator_machine_code">PicoBlaze Simulator - machine code</string>
+    <string name="picoblaze_simulator_assembly_code">PicoBlaze Simulator - assembly code</string>
+    <string name="picoblaze_simulator_examples">PicoBlaze Simulator - examples</string>
+    <string name="picoblaze_simulator_register_dump">PicoBlaze Simulator - register dump</string>
+    <string name="picoblaze_simulator_simulation">PicoBlaze Simulator - simulation</string>
+    <string name="choose_an_example">Choose an example</string>
+    <string name="assemble_and_run">Assemble and run</string>
+    <string name="highlight_assembly">Highlight Assembly</string>
+    <string name="assemble">Assemble</string>
+    <string name="open_in_browser">Open in Browser</string>
+    <string name="back_to_assembly_code">Back to Assembly Code</string>
+    <string name="back_to_machine_code">Back to Machine Code</string>
+    <string name="continue_simulating">Continue Simulating</string>
+    <string name="simulate_single_instruction">Simulate single instruction</string>
+    <string name="back_to_assembly">Back to Assembly</string>
+    <string name="dump_the_registers">Dump the Registers</string>
+    <string name="simulate_the_machine_code">Simulate the Machine Code</string>
+    <string name="go_to_register_dump">Go to register dump</string>
+</resources>

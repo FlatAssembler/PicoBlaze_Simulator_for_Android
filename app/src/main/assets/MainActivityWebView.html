@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>PicoBlaze Simulator for Android</title>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="keyword_list.js"></script>
+    <script src="tokenizer.js"></script>
+    <script src="preprocessor.js"></script>
+    <script src="parser.js"></script>
+    <script src="assembler.js"></script>
+    <script src="TreeNode.js"></script>
+    <script>
+      function highlightToken(token) {
+        if (token[0] === ";") return `<span class="comment">${token}</span>`;
+        for (const mnemonic of mnemonics)
+          if (
+            RegExp("^" + mnemonic + "$", "i").test(token) ||
+            /^interrupt$/i.test(token)
+          )
+            return `<span class="mnemonic">${token}</span>`;
+        for (const directive of preprocessor)
+          if (RegExp("^" + directive + "$", "i").test(token))
+            return `<span class="directive">${token}</span>`;
+        if (/^s(\d|[a-f])$/i.test(token))
+          return `<span class="register">${token}</span>`;
+        if (/^N?[CZAB]$/i.test(token))
+          return `<span class="flag">${token}</span>`;
+        if (/:$/.test(token)) return `<span class="label">${token}</span>`;
+        if (token[0] === '"') return `<span class="string">${token}</span>`;
+        if (
+          /^(\d|[a-f])+$/i.test(token) ||
+          /\'d$/.test(token) ||
+          /\'b$/.test(token)
+        )
+          return `<span class="number">${token}</span>`;
+        return token;
+      }
+      function syntaxHighlighter() {
+        if (areWeHighlighting) return;
+        areWeHighlighting = true;
+        const assemblyCodeDiv = document.getElementById("assemblyCode");
+        const assemblyCode = assemblyCodeDiv.innerText
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+
+        let areWeInAString = false;
+        let areWeInAComment = false;
+        let currentToken = "";
+        let highlightedText = "";
+        for (let i = 0; i < assemblyCode.length; i++) {
+          if (assemblyCode[i] === ";" && !areWeInAString) {
+            highlightedText += highlightToken(currentToken);
+            currentToken = ";";
+            areWeInAComment = true;
+            continue;
+          }
+          if (areWeInAComment && assemblyCode[i] !== "\n") {
+            currentToken += assemblyCode[i];
+            continue;
+          }
+          if (assemblyCode[i] === "\n") {
+            areWeInAString = false;
+            areWeInAComment = false;
+            highlightedText += highlightToken(currentToken) + "<br/>";
+            currentToken = "";
+            continue;
+          }
+          if (assemblyCode[i] === ":" && !areWeInAString) {
+            highlightedText += highlightToken(currentToken + assemblyCode[i]);
+            currentToken = "";
+            continue;
+          }
+          if (
+            (assemblyCode[i] === " " ||
+              assemblyCode[i] === "\t" ||
+              assemblyCode[i] === "," ||
+              assemblyCode[i] === "+" ||
+              assemblyCode[i] === "-" ||
+              assemblyCode[i] === "*" ||
+              assemblyCode[i] === "/" ||
+              assemblyCode[i] === "^") &&
+            !areWeInAString
+          ) {
+            highlightedText += highlightToken(currentToken) + assemblyCode[i];
+            currentToken = "";
+            continue;
+          }
+          if (assemblyCode[i] === '"' && !areWeInAString) {
+            highlightedText += highlightToken(currentToken);
+            currentToken = '"';
+            areWeInAString = true;
+            continue;
+          }
+          if (
+            (assemblyCode[i] === "(" ||
+              assemblyCode[i] === ")" ||
+              assemblyCode[i] === "[" ||
+              assemblyCode[i] === "]" ||
+              assemblyCode[i] === "{" ||
+              assemblyCode[i] === "}") &&
+            !areWeInAString
+          ) {
+            highlightedText +=
+              highlightToken(currentToken) +
+              '<span class="parenthesis">' +
+              assemblyCode[i] +
+              "</span>";
+            currentToken = "";
+            continue;
+          }
+          if (assemblyCode[i] !== '"') {
+            currentToken += assemblyCode[i];
+            continue;
+          }
+          if (assemblyCode[i] === '"' && areWeInAString) {
+            highlightedText += highlightToken(currentToken + '"');
+            currentToken = "";
+            areWeInAString = false;
+          }
+        }
+        highlightedText += highlightToken(currentToken);
+        assemblyCodeDiv.innerHTML = highlightedText;
+        setUpLineNumbers();
+        areWeHighlighting = false;
+      }
+      function setUpLineNumbers() {
+        const assemblyCode = document.getElementById("assemblyCode").innerText;
+        const numberOfLines = Math.max(
+          (assemblyCode.match(/\n/g) || []).length,
+          1
+        );
+        let lineNumbersHTML = "";
+        for (let i = 1; i <= numberOfLines; i++)
+          lineNumbersHTML +=
+            '<div id="label_line_' +
+            i +
+            '" data-linenumber="' +
+            i +
+            '"><img src="breakpoint.png" alt="BP" id="breakpoint_icon_' +
+            i +
+            '" class="breakpoint_icon"/>' +
+            i +
+            ".</div>";
+        document.getElementById("lineNumbers").innerHTML = lineNumbersHTML;
+        for (let i = 1; i <= numberOfLines; i++)
+          document.getElementById("label_line_" + i).onclick = setBreakpoint;
+        for (let i = 0; i < breakpoints.length; i++)
+          if (breakpoints[i] <= numberOfLines)
+            document.getElementById(
+              "breakpoint_icon_" + breakpoints[i]
+            ).style.display = "inline";
+          else {
+            breakpoints.splice(i, 1);
+            i--;
+          }
+      }
+      function setBreakpoint(event) {
+        const lineNumber = parseInt(
+          event.currentTarget.getAttribute("data-linenumber")
+        );
+        console.log("Setting/removing breakpoint on line #" + lineNumber + ".");
+        if (breakpoints.includes(lineNumber))
+          breakpoints.splice(breakpoints.indexOf(lineNumber), 1);
+        else breakpoints.push(lineNumber);
+        if (breakpoints.includes(lineNumber))
+          document.getElementById(
+            "breakpoint_icon_" + lineNumber
+          ).style.display = "inline";
+        else
+          document.getElementById(
+            "breakpoint_icon_" + lineNumber
+          ).style.display = "none";
+      }
+    </script>
+</head>
+<body>
+<div id="lineNumbers">1.</div>
+<pre id="assemblyCode" contenteditable="true" oninput="setUpLineNumbers()">;Insert assembly here...</pre>
+</body>
+</html>
