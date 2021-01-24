@@ -1,68 +1,66 @@
 #lineNumbers {
-        width: 60px;
-        margin-right: 0;
-        font-family: Courier New, monospace;
-        display: inline-block;
-        text-align: right;
-        background: #aaaaaa;
-        height: 100vh;
-        max-height: 400px;
-        position: absolute;
-        overflow: hidden;
-        font-size: 1em;
-      }
-      #assemblyCode {
-        margin: 0;
-        width: calc(
-          100% - 70px
-        );
-        padding-left: 5px;
-        font-family: Courier New, monospace;
-        text-align: left;
-        display: inline-block;
-        background: #eeeeee;
-        height: 100vh;
-        max-height: 400px;
-        position: absolute;
-        left: 60px;
-        overflow: scroll;
-        white-space: pre;
-        font-size: 1em;
-      }
-      .comment {
-        color: #333333;
-        font-style: italic;
-      }
-      .mnemonic {
-        color: #000077;
-        font-weight: bold;
-      }
-      .register {
-        color: #773300;
-        font-weight: bold;
-      }
-      .flag {
-        color: #007700;
-        font-weight: bold;
-      }
-      .label {
-        color: #770077;
-      }
-      .string {
-        color: #770000;
-      }
-      .number {
-        color: #007777;
-      }
-      .directive {
-        color: #770077;
-        font-weight: bold;
-      }
-      .parenthesis {
-        font-weight: bold;
-      }
-      .breakpoint_icon {
-        display: none;
-        width: calc(1em - 3px);
-        height: calc(1em - 3px);
-      }
+  width: 60px;
+  margin-right: 0;
+  font-family: Courier New, monospace;
+  display: inline-block;
+  text-align: right;
+  background: #aaaaaa;
+  height: 100vh;
+  max-height: 400px;
+  position: absolute;
+  overflow: hidden;
+  font-size: 1em;
+}
+#assemblyCode {
+  margin: 0;
+  width: calc(100% - 70px);
+  padding-left: 5px;
+  font-family: Courier New, monospace;
+  text-align: left;
+  display: inline-block;
+  background: #eeeeee;
+  height: 100vh;
+  max-height: 400px;
+  position: absolute;
+  left: 60px;
+  overflow: scroll;
+  white-space: pre;
+  font-size: 1em;
+}
+.comment {
+  color: #333333;
+  font-style: italic;
+}
+.mnemonic {
+  color: #000077;
+  font-weight: bold;
+}
+.register {
+  color: #773300;
+  font-weight: bold;
+}
+.flag {
+  color: #007700;
+  font-weight: bold;
+}
+.label {
+  color: #770077;
+}
+.string {
+  color: #770000;
+}
+.number {
+  color: #007777;
+}
+.directive {
+  color: #770077;
+  font-weight: bold;
+}
+.parenthesis {
+  font-weight: bold;
+}
+.breakpoint_icon {
+  display: none;
+  width: calc(1em - 3px);
+  height: calc(1em - 3px);
+}
