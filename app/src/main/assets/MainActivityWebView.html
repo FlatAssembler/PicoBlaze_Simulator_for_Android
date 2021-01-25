@@ -2,6 +2,10 @@
 <html lang="en">
   <head>
     <title>PicoBlaze Simulator for Android</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <link rel="stylesheet" href="style.css" />
     <script src="keyword_list.js"></script>
     <script src="tokenizer.js"></script>
@@ -171,6 +175,69 @@
           document.getElementById(
             "breakpoint_icon_" + lineNumber
           ).style.display = "none";
+      }
+      function sendMachineCodeToJava() {
+        const assembly = document.getElementById("assemblyCode").innerText;
+        let tokenized;
+        try {
+          tokenized = tokenize(assembly);
+        } catch (error) {
+          alert("Internal compiler error in the tokenizer: " + error.message);
+          return;
+        }
+        let resultOfTokenizing = "[";
+        for (let i = 0; i < tokenized.length; i++) {
+          const token = tokenized[i];
+          if (token.text === "\n") resultOfTokenizing += '"\\n"';
+          else resultOfTokenizing += '"' + token.text + '"';
+          if (i !== tokenized.length - 1) resultOfTokenizing += ",";
+        }
+        resultOfTokenizing += "]";
+        console.log("Result of tokenizing: ", resultOfTokenizing);
+        if (resultOfTokenizing === "[]") return "Tokenizer error!";
+        let parsed;
+        try {
+          parsed = parse(tokenized);
+        } catch (error) {
+          alert("Internal compiler error in the parser: " + error.message);
+          return "Parser error!";
+        }
+        console.log("Result of parsing: ", parsed.getLispExpression());
+        if (parsed.getLispExpression() === "()") return "Parser error!";
+        let context;
+        try {
+          context = makeCompilationContext(parsed);
+        } catch (error) {
+          alert(
+            "Internal compiler error in the preprocessor: " + error.message
+          );
+          return "Preprocessor error!";
+        }
+        console.log("Result of preprocessing: ", context);
+        try {
+          assemble(parsed, context);
+        } catch (error) {
+          alert("Internal assembler error: " + error.message);
+          return "Assembler error!";
+        }
+        let isEverythingZero = true;
+        for (let i = 0; i < 1 << 12; i++)
+          if (machineCode[i].hex !== "00000") isEverythingZero = false;
+        if (isEverythingZero) return "Assembler error or an empty program!";
+        if (typeof PicoBlaze !== "object") {
+          alert(
+            'The interface between Java and JavaScript, called "PicoBlaze", appears to be undefined!'
+          );
+          return;
+        }
+        for (let address = 0; address < 1 << 12; address++) {
+          PicoBlaze.setInstructionAtAddress(
+            address,
+            parseInt(machineCode[address].hex, 16)
+          );
+          PicoBlaze.setLineNumberAtAddress(address, machineCode[address].line);
+        }
+        return "Success!";
       }
     </script>
   </head>
