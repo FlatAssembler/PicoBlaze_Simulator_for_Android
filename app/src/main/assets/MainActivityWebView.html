@@ -40,14 +40,17 @@
         return token;
       }
       function syntaxHighlighter() {
-        if (areWeHighlighting) return;
+        if (areWeHighlighting) {
+          console.log("Syntax highlighting seems to be already running, aborting!");
+          return;
+        }
         areWeHighlighting = true;
+        console.log("Beginning the syntax highlighting...");
         const assemblyCodeDiv = document.getElementById("assemblyCode");
         const assemblyCode = assemblyCodeDiv.innerText
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;");
-
         let areWeInAString = false;
         let areWeInAComment = false;
         let currentToken = "";
@@ -124,9 +127,12 @@
           }
         }
         highlightedText += highlightToken(currentToken);
+        console.log("The syntax-highlighted assembly has been set up, setting it as \"innerHTML\"...");
         assemblyCodeDiv.innerHTML = highlightedText;
+        console.log("Setting the highlighted assembly as \"innerHTML\" succeeded, setting the line numbers...");
         setUpLineNumbers();
         areWeHighlighting = false;
+        console.log("The syntax highlighting has ended!");
       }
       function setUpLineNumbers() {
         const assemblyCode = document.getElementById("assemblyCode").innerText;
