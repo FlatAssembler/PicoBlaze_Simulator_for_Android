@@ -7,11 +7,15 @@ import android.widget.Toast;
 public class WebAppInterface {
   public int[] instructions, lineNumbers;
   Context mContext;
+  public String assemblyCode;
+  GlobalVariables globalVariables;
 
   WebAppInterface(Context context) {
-    mContext = context;
-    instructions = new int[4096];
-    lineNumbers = new int[4096];
+    mContext=context;
+    globalVariables=GlobalVariables.getInstance();
+    instructions = globalVariables.instructions;
+    lineNumbers = globalVariables.lineNumbers;
+    assemblyCode = globalVariables.assemblyCode;
   }
 
   @JavascriptInterface
@@ -36,6 +40,7 @@ public class WebAppInterface {
       return;
     }
     instructions[address] = instruction;
+    globalVariables.instructions[address]=instruction;
   }
 
   @JavascriptInterface
@@ -59,5 +64,16 @@ public class WebAppInterface {
       return;
     }
     lineNumbers[address] = lineNumber;
+    globalVariables.lineNumbers[address]=lineNumber;
+  }
+
+  @JavascriptInterface
+  public void setAssemblyCode(String code) {
+    assemblyCode=code;
+    globalVariables.assemblyCode=code;
+  }
+
+  @JavascriptInterface public String getAssemblyCode() {
+    return globalVariables.assemblyCode;
   }
 }

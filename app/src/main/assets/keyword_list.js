@@ -55,6 +55,8 @@ const preprocessor = ["ADDRESS", "ORG", "VHDL", "EQU", "NAMEREG", "CONSTANT"];
 let machineCode = [];
 for (let i = 0; i < 4096; i++) machineCode.push({ hex: "00000", line: 0 });
 
+let breakpoints = [];
+
 function formatAsAddress(n) {
   let ret = Math.round(n).toString(16);
   if (Math.round(n) >= 4096 || Math.round(n) < 0) {

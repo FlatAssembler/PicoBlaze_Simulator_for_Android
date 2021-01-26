@@ -220,25 +220,31 @@
           alert("Internal assembler error: " + error.message);
           return "Assembler error!";
         }
-        let isEverythingZero = true;
-        for (let i = 0; i < 1 << 12; i++)
-          if (machineCode[i].hex !== "00000") isEverythingZero = false;
-        if (isEverythingZero) return "Assembler error or an empty program!";
         if (typeof PicoBlaze !== "object") {
           alert(
             'The interface between Java and JavaScript, called "PicoBlaze", appears to be undefined!'
           );
           return;
         }
+        let isEverythingZero = true;
         for (let address = 0; address < 1 << 12; address++) {
           PicoBlaze.setInstructionAtAddress(
             address,
             parseInt(machineCode[address].hex, 16)
           );
           PicoBlaze.setLineNumberAtAddress(address, machineCode[address].line);
+          if (machineCode[address].hex !== "00000") isEverythingZero = false;
         }
+        PicoBlaze.setAssemblyCode(document.getElementById("assemblyCode").innerText);
+        if (isEverythingZero) return "Assembler error or an empty program!";
         return "Success!";
       }
+      window.onload=()=> {
+        if (typeof PicoBlaze === "object") {
+          document.getElementById("assemblyCode").innerText = PicoBlaze.getAssemblyCode();
+          setUpLineNumbers();
+        }
+      };
     </script>
   </head>
   <body>
