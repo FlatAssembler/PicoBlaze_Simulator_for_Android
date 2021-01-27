@@ -8,14 +8,14 @@ public class WebAppInterface {
   public int[] instructions, lineNumbers;
   Context mContext;
   public String assemblyCode;
-  GlobalVariables globalVariables;
+  AssembledProgram assembledProgram;
 
   WebAppInterface(Context context) {
     mContext=context;
-    globalVariables=GlobalVariables.getInstance();
-    instructions = globalVariables.instructions;
-    lineNumbers = globalVariables.lineNumbers;
-    assemblyCode = globalVariables.assemblyCode;
+    assembledProgram = AssembledProgram.getInstance();
+    instructions = assembledProgram.instructions;
+    lineNumbers = assembledProgram.lineNumbers;
+    assemblyCode = assembledProgram.assemblyCode;
   }
 
   @JavascriptInterface
@@ -40,7 +40,7 @@ public class WebAppInterface {
       return;
     }
     instructions[address] = instruction;
-    globalVariables.instructions[address]=instruction;
+    assembledProgram.instructions[address]=instruction;
   }
 
   @JavascriptInterface
@@ -64,16 +64,16 @@ public class WebAppInterface {
       return;
     }
     lineNumbers[address] = lineNumber;
-    globalVariables.lineNumbers[address]=lineNumber;
+    assembledProgram.lineNumbers[address]=lineNumber;
   }
 
   @JavascriptInterface
   public void setAssemblyCode(String code) {
     assemblyCode=code;
-    globalVariables.assemblyCode=code;
+    assembledProgram.assemblyCode=code;
   }
 
   @JavascriptInterface public String getAssemblyCode() {
-    return globalVariables.assemblyCode;
+    return assembledProgram.assemblyCode;
   }
 }

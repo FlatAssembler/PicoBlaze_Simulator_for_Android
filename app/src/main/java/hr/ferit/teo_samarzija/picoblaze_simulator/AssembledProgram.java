@@ -1,19 +1,19 @@
 package hr.ferit.teo_samarzija.picoblaze_simulator;
 
-public class GlobalVariables {
+public class AssembledProgram {
     public int[] instructions, lineNumbers;
     public String assemblyCode;
-    private GlobalVariables() {
+    private AssembledProgram() {
         instructions = new int[4096];
         lineNumbers = new int[4096];
         assemblyCode=new String(";Insert assembly here...");
     }
 
-    private static GlobalVariables instance;
+    private static AssembledProgram instance;
 
-    public static GlobalVariables getInstance() {
+    public static AssembledProgram getInstance() {
         if (instance==null)
-            instance=new GlobalVariables();
+            instance=new AssembledProgram();
         return instance;
     }
 }

@@ -241,13 +241,13 @@
           PicoBlaze.setLineNumberAtAddress(address, machineCode[address].line);
           if (machineCode[address].hex !== "00000") isEverythingZero = false;
         }
-        PicoBlaze.setAssemblyCode(document.getElementById("assemblyCode").innerText);
+        PicoBlaze.setAssemblyCode(document.getElementById("assemblyCode").innerHTML);
         if (isEverythingZero) return "Assembler error or an empty program!";
         return "Success!";
       }
       window.onload=()=> {
         if (typeof PicoBlaze === "object") {
-          document.getElementById("assemblyCode").innerText = PicoBlaze.getAssemblyCode();
+          document.getElementById("assemblyCode").innerHTML = PicoBlaze.getAssemblyCode();
           setUpLineNumbers();
         }
       };

@@ -50,8 +50,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d("PicoBlaze", "JavaScript returned: " + value);
             if (value.compareTo("\"Success!\"") == 0)
               moveToMachineCode();
+            else
+              warnAboutErrorInJavaScript();
           }
         });
+  }
+  public void warnAboutErrorInJavaScript() {
+    Toast.makeText(this,"The assembler (written in JavaScript) terminated without sending any machine code to Java.",Toast.LENGTH_LONG).show();
   }
   public void showExamples(View view) {
     Intent intent = new Intent(this, examples.class);
@@ -70,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
             Log.d("PicoBlaze", "JavaScript returned: " + value);
             if (value.compareTo("\"Success!\"") == 0)
               moveToSimulation();
+            else
+              warnAboutErrorInJavaScript();
           }
         });
   }
