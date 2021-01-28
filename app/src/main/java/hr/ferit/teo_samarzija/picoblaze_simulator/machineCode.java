@@ -14,10 +14,10 @@ public class machineCode extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.machine_code);
-    RecyclerView recyclerView=findViewById(R.id.recyclerView2);
-    adapter=new AdapterForMachineCode();
+    RecyclerView recyclerView = findViewById(R.id.recyclerView2);
+    adapter = new AdapterForMachineCode();
     recyclerView.setAdapter(adapter);
-    manager=new LinearLayoutManager(this);
+    manager = new LinearLayoutManager(this);
     recyclerView.setLayoutManager(manager);
   }
   public void showAssemblyCode(View view) {

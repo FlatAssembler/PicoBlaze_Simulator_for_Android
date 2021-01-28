@@ -56,7 +56,12 @@ public class MainActivity extends AppCompatActivity {
         });
   }
   public void warnAboutErrorInJavaScript() {
-    Toast.makeText(this,"The assembler (written in JavaScript) terminated without sending any machine code to Java.",Toast.LENGTH_LONG).show();
+    Toast
+        .makeText(
+            this,
+            "The assembler (written in JavaScript) terminated without sending any machine code to Java.",
+            Toast.LENGTH_LONG)
+        .show();
   }
   public void showExamples(View view) {
     Intent intent = new Intent(this, examples.class);

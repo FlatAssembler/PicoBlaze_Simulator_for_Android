@@ -11,7 +11,7 @@ public class WebAppInterface {
   AssembledProgram assembledProgram;
 
   WebAppInterface(Context context) {
-    mContext=context;
+    mContext = context;
     assembledProgram = AssembledProgram.getInstance();
     instructions = assembledProgram.instructions;
     lineNumbers = assembledProgram.lineNumbers;
@@ -20,7 +20,7 @@ public class WebAppInterface {
 
   @JavascriptInterface
   public void setInstructionAtAddress(int address, int instruction) {
-    if (address < 0 || address > (1 << 12) - 1) {
+    if (address < 0 || address >= 1 << 12) {
       Toast
           .makeText(mContext,
                     "The JavaScript program tried to write at the address " +
@@ -29,7 +29,7 @@ public class WebAppInterface {
           .show();
       return;
     }
-    if (instruction < 0 || instruction > (1 << 18) - 1) {
+    if (instruction < 0 || instruction >= 1 << 18) {
       Toast
           .makeText(
               mContext,
@@ -40,12 +40,12 @@ public class WebAppInterface {
       return;
     }
     instructions[address] = instruction;
-    assembledProgram.instructions[address]=instruction;
+    assembledProgram.instructions[address] = instruction;
   }
 
   @JavascriptInterface
   public void setLineNumberAtAddress(int address, int lineNumber) {
-    if (address < 0 || address > 4096) {
+    if (address < 0 || address >= 1 << 12) {
       Toast
           .makeText(mContext,
                     "The JavaScript program tried to write at the address " +
@@ -64,16 +64,17 @@ public class WebAppInterface {
       return;
     }
     lineNumbers[address] = lineNumber;
-    assembledProgram.lineNumbers[address]=lineNumber;
+    assembledProgram.lineNumbers[address] = lineNumber;
   }
 
   @JavascriptInterface
   public void setAssemblyCode(String code) {
-    assemblyCode=code;
-    assembledProgram.assemblyCode=code;
+    assemblyCode = code;
+    assembledProgram.assemblyCode = code;
   }
 
-  @JavascriptInterface public String getAssemblyCode() {
+  @JavascriptInterface
+  public String getAssemblyCode() {
     return assembledProgram.assemblyCode;
   }
 }
