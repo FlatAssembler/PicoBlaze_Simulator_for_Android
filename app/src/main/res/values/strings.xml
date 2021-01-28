@@ -18,4 +18,7 @@
     <string name="dump_the_registers">Dump the Registers</string>
     <string name="simulate_the_machine_code">Simulate the Machine Code</string>
     <string name="go_to_register_dump">Go to register dump</string>
+    <string name="address">Address in EPROM</string>
+    <string name="line_of_assembly">Line of Assembly</string>
+    <string name="machine_code_directive">Machine Code Directive</string>
 </resources>
