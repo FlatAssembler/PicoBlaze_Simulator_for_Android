@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hr.ferit.teo_samarzija.picoblaze_simulator">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,5 +23,6 @@
         <activity android:name=".registerDump"/>
         <activity android:name=".simulation"/>
     </application>
+
 
 </manifest>

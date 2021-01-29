@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+/app/libs/retrofit-2.9.0.jar
