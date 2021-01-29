@@ -1,5 +1,6 @@
 package hr.ferit.teo_samarzija.picoblaze_simulator;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +25,19 @@ public class AdapterForMachineCode
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
     if (position == 0) {
       holder.getAddressView().setText(R.string.address);
+      holder.getAddressView().setTypeface(null, Typeface.BOLD);
       holder.getLineNumberView().setText(R.string.line_of_assembly);
+      holder.getLineNumberView().setTypeface(null,Typeface.BOLD);
       holder.getMachineCodeView().setText(R.string.machine_code_directive);
+      holder.getMachineCodeView().setTypeface(null,Typeface.BOLD);
       return;
     }
     AssembledProgram assembledProgram = AssembledProgram.getInstance();
     int index = -1;
     while (position > 0 && index < (1 << 12) - 1) {
       index++;
-      if (assembledProgram.instructions[index] != 0)
+      if (assembledProgram.lineNumbers[index] != 0 ||
+              assembledProgram.instructions[index] != 0)
         position--;
     }
     StringBuilder machineCodeString = new StringBuilder(
@@ -52,8 +57,9 @@ public class AdapterForMachineCode
   public int getItemCount() {
     int counter = 1;
     AssembledProgram assembledProgram = AssembledProgram.getInstance();
-    for (int directive : assembledProgram.instructions) {
-      if (directive != 0)
+    for (int i=0; i<assembledProgram.lineNumbers.length; i++) {
+      if (assembledProgram.lineNumbers[i] != 0 ||
+              assembledProgram.instructions[i] != 0)
         counter++;
     }
     return counter;

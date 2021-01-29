@@ -41,7 +41,9 @@
       }
       function syntaxHighlighter() {
         if (areWeHighlighting) {
-          console.log("Syntax highlighting seems to be already running, aborting!");
+          console.log(
+            "Syntax highlighting seems to be already running, aborting!"
+          );
           return;
         }
         areWeHighlighting = true;
@@ -127,9 +129,13 @@
           }
         }
         highlightedText += highlightToken(currentToken);
-        console.log("The syntax-highlighted assembly has been set up, setting it as \"innerHTML\"...");
+        console.log(
+          'The syntax-highlighted assembly has been set up, setting it as "innerHTML"...'
+        );
         assemblyCodeDiv.innerHTML = highlightedText;
-        console.log("Setting the highlighted assembly as \"innerHTML\" succeeded, setting the line numbers...");
+        console.log(
+          'Setting the highlighted assembly as "innerHTML" succeeded, setting the line numbers...'
+        );
         setUpLineNumbers();
         areWeHighlighting = false;
         console.log("The syntax highlighting has ended!");
@@ -239,15 +245,23 @@
             parseInt(machineCode[address].hex, 16)
           );
           PicoBlaze.setLineNumberAtAddress(address, machineCode[address].line);
-          if (machineCode[address].hex !== "00000") isEverythingZero = false;
+          if (
+            machineCode[address].hex !== "00000" ||
+            machineCode[address].line !== 0
+          )
+            isEverythingZero = false;
         }
-        PicoBlaze.setAssemblyCode(document.getElementById("assemblyCode").innerHTML);
+        PicoBlaze.setAssemblyCode(
+          document.getElementById("assemblyCode").innerHTML
+        );
         if (isEverythingZero) return "Assembler error or an empty program!";
         return "Success!";
       }
-      window.onload=()=> {
+      window.onload = () => {
         if (typeof PicoBlaze === "object") {
-          document.getElementById("assemblyCode").innerHTML = PicoBlaze.getAssemblyCode();
+          document.getElementById(
+            "assemblyCode"
+          ).innerHTML = PicoBlaze.getAssemblyCode();
           setUpLineNumbers();
         }
       };
