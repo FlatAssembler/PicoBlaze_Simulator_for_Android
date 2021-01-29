@@ -27,9 +27,9 @@ public class AdapterForMachineCode
       holder.getAddressView().setText(R.string.address);
       holder.getAddressView().setTypeface(null, Typeface.BOLD);
       holder.getLineNumberView().setText(R.string.line_of_assembly);
-      holder.getLineNumberView().setTypeface(null,Typeface.BOLD);
+      holder.getLineNumberView().setTypeface(null, Typeface.BOLD);
       holder.getMachineCodeView().setText(R.string.machine_code_directive);
-      holder.getMachineCodeView().setTypeface(null,Typeface.BOLD);
+      holder.getMachineCodeView().setTypeface(null, Typeface.BOLD);
       return;
     }
     AssembledProgram assembledProgram = AssembledProgram.getInstance();
@@ -37,7 +37,7 @@ public class AdapterForMachineCode
     while (position > 0 && index < (1 << 12) - 1) {
       index++;
       if (assembledProgram.lineNumbers[index] != 0 ||
-              assembledProgram.instructions[index] != 0)
+          assembledProgram.instructions[index] != 0)
         position--;
     }
     StringBuilder machineCodeString = new StringBuilder(
@@ -51,15 +51,18 @@ public class AdapterForMachineCode
     holder.getMachineCodeView().setText(machineCodeString.toString());
     holder.getLineNumberView().setText(
         String.format(Locale.US, "%d", assembledProgram.lineNumbers[index]));
+    holder.getMachineCodeView().setTypeface(null, Typeface.NORMAL);
+    holder.getLineNumberView().setTypeface(null, Typeface.NORMAL);
+    holder.getAddressView().setTypeface(null, Typeface.NORMAL);
   }
 
   @Override
   public int getItemCount() {
     int counter = 1;
     AssembledProgram assembledProgram = AssembledProgram.getInstance();
-    for (int i=0; i<assembledProgram.lineNumbers.length; i++) {
+    for (int i = 0; i < assembledProgram.lineNumbers.length; i++) {
       if (assembledProgram.lineNumbers[i] != 0 ||
-              assembledProgram.instructions[i] != 0)
+          assembledProgram.instructions[i] != 0)
         counter++;
     }
     return counter;

@@ -21,4 +21,8 @@
     <string name="address">Address in EPROM</string>
     <string name="line_of_assembly">Line of Assembly</string>
     <string name="machine_code_directive">Machine Code Directive</string>
+    <string name="icon">Icon</string>
+    <string name="name_of_the_example_program">Name of the example program</string>
+    <string name="empty_response_warning">The server returned an empty response!?</string>
+    <string name="network_error_warning">\"Cannot connect to the server with example programs! \"</string>
 </resources>
