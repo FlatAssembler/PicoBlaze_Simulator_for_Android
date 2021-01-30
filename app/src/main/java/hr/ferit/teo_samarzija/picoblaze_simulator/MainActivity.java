@@ -10,6 +10,7 @@ import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
@@ -38,10 +39,18 @@ public class MainActivity extends AppCompatActivity {
     startActivity(openURL);
   }
   public void moveToMachineCode() {
+    Button assembleButton=findViewById(R.id.button13);
+    assembleButton.setEnabled(true);
+    Button simulationButton=findViewById(R.id.button10);
+    simulationButton.setEnabled(true);
     Intent intent = new Intent(this, machineCode.class);
     startActivity(intent);
   }
   public void assemble(View view) {
+    Button assembleButton=findViewById(R.id.button13);
+    assembleButton.setEnabled(false);
+    Button simulationButton=findViewById(R.id.button10);
+    simulationButton.setEnabled(false);
     WebView webView = findViewById(R.id.WebView);
     webView.evaluateJavascript(
         "sendMachineCodeToJava()", new ValueCallback<String>() {
@@ -56,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
         });
   }
   public void warnAboutErrorInJavaScript() {
+    Button assembleButton=findViewById(R.id.button13);
+    assembleButton.setEnabled(true);
+    Button simulationButton=findViewById(R.id.button10);
+    simulationButton.setEnabled(true);
     Toast
         .makeText(
             this,
@@ -68,10 +81,18 @@ public class MainActivity extends AppCompatActivity {
     startActivity(intent);
   }
   public void moveToSimulation() {
+    Button assembleButton=findViewById(R.id.button13);
+    assembleButton.setEnabled(true);
+    Button simulationButton=findViewById(R.id.button10);
+    simulationButton.setEnabled(true);
     Intent intent = new Intent(this, simulation.class);
     startActivity(intent);
   }
   public void startSimulating(View view) {
+    Button assembleButton=findViewById(R.id.button13);
+    assembleButton.setEnabled(false);
+    Button simulationButton=findViewById(R.id.button10);
+    simulationButton.setEnabled(false);
     WebView webView = findViewById(R.id.WebView);
     webView.evaluateJavascript(
         "sendMachineCodeToJava()", new ValueCallback<String>() {
