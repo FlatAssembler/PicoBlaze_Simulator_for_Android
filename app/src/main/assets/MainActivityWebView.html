@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <title>PicoBlaze Simulator for Android</title>
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css"/>
     <script src="keyword_list.js"></script>
     <script src="tokenizer.js"></script>
     <script src="preprocessor.js"></script>
@@ -264,13 +264,19 @@
           ).innerHTML = PicoBlaze.getAssemblyCode();
           setUpLineNumbers();
         }
+        document.getElementById("assemblyCode").onscroll = () => {
+          document
+            .getElementById("lineNumbers")
+            .scroll(0, document.getElementById("assemblyCode").scrollTop);
+        };
       };
+
     </script>
-  </head>
-  <body>
-    <div id="lineNumbers">1.</div>
-    <pre id="assemblyCode" contenteditable="true" oninput="setUpLineNumbers()">
+</head>
+<body>
+<div id="lineNumbers">1.</div>
+<pre id="assemblyCode" contenteditable="true" oninput="setUpLineNumbers()">
 ;Insert assembly here...</pre
-    >
-  </body>
+>
+</body>
 </html>
