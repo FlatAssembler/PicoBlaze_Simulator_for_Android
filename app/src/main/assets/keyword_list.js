@@ -50,7 +50,20 @@ const mnemonics = [
   "COMPARECY",
   "COMPCY",
 ];
-const preprocessor = ["ADDRESS", "ORG", "VHDL", "EQU", "NAMEREG", "CONSTANT"];
+const preprocessor = [
+  "ADDRESS",
+  "ORG",
+  "VHDL",
+  "EQU",
+  "NAMEREG",
+  "CONSTANT",
+  "DISPLAY",
+  "IF",
+  "ELSE",
+  "ENDIF",
+  "WHILE",
+  "ENDWHILE",
+];
 
 let machineCode = [];
 for (let i = 0; i < 4096; i++) machineCode.push({ hex: "00000", line: 0 });
