@@ -83,7 +83,17 @@ public class WebAppInterface {
 
   @JavascriptInterface
   public void displayCharacterOnTerminal(int characterCode) {
-    textDisplayedDuringAssembly += Character.toChars(characterCode);
+    if (characterCode > 127 || characterCode < 0) {
+      Toast
+              .makeText(mContext,
+                      "The JavaScript program tried to output a character with a code " +
+                              characterCode + ", which is not an ASCII character, to the terminal!",
+                      Toast.LENGTH_LONG)
+              .show();
+      return;
+    }
+    Log.d("PicoBlaze","Logging the ASCII character with the code "+characterCode+" to the terminal.");
+    textDisplayedDuringAssembly += String.copyValueOf(Character.toChars(characterCode));
   }
 
   @JavascriptInterface
