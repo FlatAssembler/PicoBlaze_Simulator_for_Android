@@ -1,6 +1,7 @@
 package hr.ferit.teo_samarzija.picoblaze_simulator;
 
 import android.content.Context;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ public class WebAppInterface {
     instructions = assembledProgram.instructions;
     lineNumbers = assembledProgram.lineNumbers;
     assemblyCode = assembledProgram.assemblyCode;
+    textDisplayedDuringAssembly = assembledProgram.terminalOutputDuringAssembly;
   }
 
   @JavascriptInterface
@@ -81,11 +83,21 @@ public class WebAppInterface {
 
   @JavascriptInterface
   public void displayCharacterOnTerminal(int characterCode) {
-    textDisplayedDuringAssembly+=Character.toChars(characterCode);
+    textDisplayedDuringAssembly += Character.toChars(characterCode);
   }
 
   @JavascriptInterface
   public void clearTerminal() {
     textDisplayedDuringAssembly = "";
+  }
+
+  @JavascriptInterface
+  public void flushTheTerminal() {
+    assembledProgram.terminalOutputDuringAssembly = textDisplayedDuringAssembly;
+    if (!textDisplayedDuringAssembly.isEmpty()) {
+      Log.d("PicoBlaze",
+            "During assembly, the program outputted the following:\n" +
+                textDisplayedDuringAssembly);
+    }
   }
 }

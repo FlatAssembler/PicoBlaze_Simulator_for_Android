@@ -39,17 +39,17 @@ public class MainActivity extends AppCompatActivity {
     startActivity(openURL);
   }
   public void moveToMachineCode() {
-    Button assembleButton=findViewById(R.id.button13);
+    Button assembleButton = findViewById(R.id.button13);
     assembleButton.setEnabled(true);
-    Button simulationButton=findViewById(R.id.button10);
+    Button simulationButton = findViewById(R.id.button10);
     simulationButton.setEnabled(true);
     Intent intent = new Intent(this, machineCode.class);
     startActivity(intent);
   }
   public void assemble(View view) {
-    Button assembleButton=findViewById(R.id.button13);
+    Button assembleButton = findViewById(R.id.button13);
     assembleButton.setEnabled(false);
-    Button simulationButton=findViewById(R.id.button10);
+    Button simulationButton = findViewById(R.id.button10);
     simulationButton.setEnabled(false);
     WebView webView = findViewById(R.id.WebView);
     webView.evaluateJavascript(
@@ -65,14 +65,14 @@ public class MainActivity extends AppCompatActivity {
         });
   }
   public void warnAboutErrorInJavaScript() {
-    Button assembleButton=findViewById(R.id.button13);
+    Button assembleButton = findViewById(R.id.button13);
     assembleButton.setEnabled(true);
-    Button simulationButton=findViewById(R.id.button10);
+    Button simulationButton = findViewById(R.id.button10);
     simulationButton.setEnabled(true);
     Toast
         .makeText(
             this,
-            "The assembler (written in JavaScript) terminated without sending any machine code to Java.",
+            "The assembler (written in JavaScript) terminated without sending any machine code to the main program (written in Java).",
             Toast.LENGTH_LONG)
         .show();
   }
@@ -81,17 +81,17 @@ public class MainActivity extends AppCompatActivity {
     startActivity(intent);
   }
   public void moveToSimulation() {
-    Button assembleButton=findViewById(R.id.button13);
+    Button assembleButton = findViewById(R.id.button13);
     assembleButton.setEnabled(true);
-    Button simulationButton=findViewById(R.id.button10);
+    Button simulationButton = findViewById(R.id.button10);
     simulationButton.setEnabled(true);
     Intent intent = new Intent(this, simulation.class);
     startActivity(intent);
   }
   public void startSimulating(View view) {
-    Button assembleButton=findViewById(R.id.button13);
+    Button assembleButton = findViewById(R.id.button13);
     assembleButton.setEnabled(false);
-    Button simulationButton=findViewById(R.id.button10);
+    Button simulationButton = findViewById(R.id.button10);
     simulationButton.setEnabled(false);
     WebView webView = findViewById(R.id.WebView);
     webView.evaluateJavascript(

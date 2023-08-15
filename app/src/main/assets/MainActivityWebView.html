@@ -236,6 +236,7 @@
         }
         console.log("Result of parsing: ", parsed.getLispExpression());
         if (parsed.getLispExpression() === "()") return "Parser error!";
+        PicoBlaze.clearTerminal();
         let context;
         try {
           context = makeCompilationContext(parsed);
@@ -245,8 +246,8 @@
           );
           return "Preprocessor error!";
         }
-        PicoBlaze.clearTerminal();
         console.log("Result of preprocessing: ", context);
+        PicoBlaze.flushTheTerminal();
         try {
           assemble(parsed, context);
         } catch (error) {
