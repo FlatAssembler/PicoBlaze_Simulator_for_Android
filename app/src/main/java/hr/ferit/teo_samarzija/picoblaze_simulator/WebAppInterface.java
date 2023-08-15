@@ -85,15 +85,22 @@ public class WebAppInterface {
   public void displayCharacterOnTerminal(int characterCode) {
     if (characterCode > 127 || characterCode < 0) {
       Toast
-              .makeText(mContext,
-                      "The JavaScript program tried to output a character with a code " +
-                              characterCode + ", which is not an ASCII character, to the terminal!",
-                      Toast.LENGTH_LONG)
-              .show();
+          .makeText(
+              mContext,
+              "The JavaScript program tried to output a character with a code " +
+                  characterCode +
+                  ", which is not an ASCII character, to the terminal!",
+              Toast.LENGTH_LONG)
+          .show();
       return;
     }
-    Log.d("PicoBlaze","Logging the ASCII character with the code "+characterCode+" to the terminal.");
-    textDisplayedDuringAssembly += String.copyValueOf(Character.toChars(characterCode));
+    Log.d("PicoBlaze", "Logging the ASCII character with the code " +
+                           characterCode + " to the terminal.");
+    textDisplayedDuringAssembly += String.copyValueOf(Character.toChars(
+        characterCode)); // And I thought appending a character with a specified
+                         // ASCII code would be as easy in Java as it is in
+                         // JavaScript. Apparently, it's harder than in both
+                         // JavaScript and C++.
   }
 
   @JavascriptInterface
