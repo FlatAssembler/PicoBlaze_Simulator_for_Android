@@ -9,6 +9,7 @@ public class WebAppInterface {
   Context mContext;
   public String assemblyCode;
   AssembledProgram assembledProgram;
+  public String textDisplayedDuringAssembly;
 
   WebAppInterface(Context context) {
     mContext = context;
@@ -76,5 +77,15 @@ public class WebAppInterface {
   @JavascriptInterface
   public String getAssemblyCode() {
     return assembledProgram.assemblyCode;
+  }
+
+  @JavascriptInterface
+  public void displayCharacterOnTerminal(int characterCode) {
+    textDisplayedDuringAssembly+=Character.toChars(characterCode);
+  }
+
+  @JavascriptInterface
+  public void clearTerminal() {
+    textDisplayedDuringAssembly = "";
   }
 }

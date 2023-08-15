@@ -203,6 +203,12 @@
           ).style.display = "none";
       }
       function sendMachineCodeToJava() {
+        if (typeof PicoBlaze !== "object") {
+          alert(
+            'The interface between Java and JavaScript, called "PicoBlaze", appears to be undefined!'
+          );
+          return;
+        }
         const assembly = document.getElementById("assemblyCode").innerText;
         let tokenized;
         try {
@@ -239,18 +245,13 @@
           );
           return "Preprocessor error!";
         }
+        PicoBlaze.clearTerminal();
         console.log("Result of preprocessing: ", context);
         try {
           assemble(parsed, context);
         } catch (error) {
           alert("Internal assembler error: " + error.message);
           return "Assembler error!";
-        }
-        if (typeof PicoBlaze !== "object") {
-          alert(
-            'The interface between Java and JavaScript, called "PicoBlaze", appears to be undefined!'
-          );
-          return;
         }
         let isEverythingZero = true;
         for (let address = 0; address < 1 << 12; address++) {
