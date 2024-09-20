@@ -4,12 +4,12 @@ function tokenize(input) {
   let areWeInAString = false;
   let areWeInAComment = false;
   let currentLine = 1; // Don't care about columns, lines in assembly language
-  // are always short.
+                       // are always short.
   let currentToken = "";
   for (let i = 0; i < input.length; i++) {
     if (areWeInAComment && areWeInAString) {
       alert(
-          "Tokenizer got into a forbidden state because of some bug in it! Line " +
+          "Tokenizer got into a forbidden state because of some bug in it! Line #" +
           currentLine);
       return [];
     }
@@ -48,9 +48,9 @@ function tokenize(input) {
       tokenized.push(new TreeNode(currentToken, currentLine));
       currentToken = "";
       tokenized.push(new TreeNode(
-          "\n", currentLine++)); // Because it's a whitespace-sensitive
-      // language, the new-line characters are tokens
-      // visible to the parser.
+          "\n", currentLine++)); // Because assembly language is a
+                                 // whitespace-sensitive language, the new-line
+                                 // characters are tokens visible to the parser.
       continue;
     }
     if (
@@ -66,7 +66,8 @@ function tokenize(input) {
          input[i] == "," || input[i] == "/" || input[i] == "*" ||
          input[i] == "-" || input[i] == "+" || input[i] == "^" ||
          input[i] == "<" || input[i] == ">" || input[i] == "=" ||
-         input[i] == "&" || input[i] == "|") &&
+         input[i] == "&" || input[i] == "|" || input[i] == "?" ||
+         input[i] == ':') &&
         !areWeInAString) {
       tokenized.push(new TreeNode(currentToken, currentLine));
       tokenized.push(new TreeNode(input[i], currentLine));
@@ -97,5 +98,14 @@ function tokenize(input) {
       i--;
     }
   }
+
+  // Labels are single tokens.
+  for (let i = 0; i < tokenized.length; i++)
+    if (tokenized[i].text == ':' && tokenized[i + 1].text == '\n') {
+      tokenized[i - 1].text += ':';
+      tokenized.splice(i, 1);
+      i--;
+    }
+
   return tokenized;
 }
