@@ -38,7 +38,8 @@
         if (
           /^(\d|[a-f])+$/i.test(token) ||
           /\'d$/.test(token) ||
-          /\'b$/.test(token)
+          /\'b$/.test(token) ||
+          /\'o$/.test(token)
         )
           return `<span class="number">${token}</span>`;
         return token;
