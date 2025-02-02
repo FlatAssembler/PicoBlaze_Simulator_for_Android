@@ -63,7 +63,11 @@ const preprocessor = [
   "ENDIF",
   "WHILE",
   "ENDWHILE",
+  "BASE_DECIMAL",
+  "BASE_HEXADECIMAL",
 ];
+
+let default_base_of_literals_in_assembly = 16;
 
 let machineCode = [];
 for (let i = 0; i < 4096; i++) machineCode.push({ hex: "00000", line: 0 });
