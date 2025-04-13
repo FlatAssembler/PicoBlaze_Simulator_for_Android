@@ -65,6 +65,7 @@ const preprocessor = [
   "ENDWHILE",
   "BASE_DECIMAL",
   "BASE_HEXADECIMAL",
+  "PRINT_STRING",
 ];
 
 let default_base_of_literals_in_assembly = 16;
