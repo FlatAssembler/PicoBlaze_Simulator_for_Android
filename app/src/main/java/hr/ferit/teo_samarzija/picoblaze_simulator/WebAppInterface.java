@@ -117,4 +117,16 @@ public class WebAppInterface {
                 textDisplayedDuringAssembly);
     }
   }
+
+  @JavascriptInterface
+  public void resetDisabledBreakpoints() {
+    Log.d("PicoBlaze",
+          "Resetting the disabled breakpoints!");
+  }
+
+  @JavascriptInterface
+  public void setDisabledBreakpoint(int address) {
+    Log.d("PicoBlaze",
+          "Setting it so that a breakpoint cannot be set on the address " + Integer.toHexString(address)+".");
+  }
 }
