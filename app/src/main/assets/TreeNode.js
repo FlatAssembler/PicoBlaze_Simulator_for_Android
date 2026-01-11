@@ -17,13 +17,13 @@ function LevenshtainDistance(A, B) {
     temp.push(tmp);
   }
 
-  const min =
-      (a, b) => {
-        if (a < b)
-          return a;
-        else
-          return b;
-      }
+  const min = (a, b) => {
+    if (a < b)
+      return a;
+    else
+      return b;
+  }; // I am not sure whether there should be a semi-colon here or not. The code
+     // seems to somehow compile either way in both Firefox and Chrome.
 
   for (let i = 0; i < temp.length; i++) {
     for (let j = 0; j < temp[0].length; j++) {
@@ -53,12 +53,10 @@ class TreeNode {
   getLispExpression() {
     if (!this.children.length)
       return '"' + (this.text == "\n" ? "\\n" : this.text) + '"';
-    let ret = '("' + this.text + '" ';
-    for (let i = 0; i < this.children.length; i++)
-      if (i < this.children.length - 1)
-        ret += this.children[i].getLispExpression() + " ";
-      else
-        ret += this.children[i].getLispExpression() + ")";
+    let ret = '("' + this.text + '" ' +
+              this.children.map((node) => {return node.getLispExpression()})
+                  .join(' ') +
+              ')';
     return ret;
   }
   interpretAsArithmeticExpression(constants, labels) {
