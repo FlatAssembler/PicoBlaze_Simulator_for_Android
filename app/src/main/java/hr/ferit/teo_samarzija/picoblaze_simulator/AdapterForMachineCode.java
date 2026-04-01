@@ -1,6 +1,10 @@
 package hr.ferit.teo_samarzija.picoblaze_simulator;
 
+import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
+
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +58,20 @@ public class AdapterForMachineCode
     holder.getMachineCodeView().setTypeface(null, Typeface.NORMAL);
     holder.getLineNumberView().setTypeface(null, Typeface.NORMAL);
     holder.getAddressView().setTypeface(null, Typeface.NORMAL);
+    if (assembledProgram.breakpoints.contains(assembledProgram.lineNumbers[index])
+        && !assembledProgram.forbiddenBreakpoints.contains(index))
+    {
+        Log.d("PicoBlaze","There appears to be a breakpoint on the line " + assembledProgram.lineNumbers[index]+", as the breakpoints are "+assembledProgram.breakpoints.toString()+", and the forbidden breakpoints are "+assembledProgram.forbiddenBreakpoints.toString());
+        holder.getAddressView().setBackgroundColor(Color.RED);
+        holder.getLineNumberView().setBackgroundColor(Color.RED);
+        holder.getMachineCodeView().setBackgroundColor(Color.RED);
+    }
+    else
+    {
+        holder.getAddressView().setBackground(getDrawable(holder.getAddressView().getContext(), R.drawable.table_background));
+        holder.getLineNumberView().setBackground(getDrawable(holder.getLineNumberView().getContext(), R.drawable.table_background));
+        holder.getMachineCodeView().setBackground(getDrawable(holder.getMachineCodeView().getContext(), R.drawable.table_background));
+    }
   }
 
   @Override

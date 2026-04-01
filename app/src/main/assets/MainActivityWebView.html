@@ -272,6 +272,9 @@
         PicoBlaze.setAssemblyCode(
           document.getElementById("assemblyCode").innerHTML
         );
+        PicoBlaze.clearTheBreakpoints();
+        for (const breakpoint of breakpoints)
+            PicoBlaze.setTheBreakpointAtLine(breakpoint);
         if (isEverythingZero && !wasThereAnythingOnTheTerminal) return "Assembler error or an empty program!";
         return "Success!";
       }
@@ -280,7 +283,15 @@
           document.getElementById("assemblyCode").innerHTML =
             PicoBlaze.getAssemblyCode();
           setUpLineNumbers();
-        }
+          breakpoints = JSON.parse(PicoBlaze.getBreakpointsJSON());
+          const numberOfLines = Math.max(
+            (document.getElementById("assemblyCode").innerText.match(/\n/g) || []).length,
+            1
+          );
+          for (breakpoint of breakpoints)
+            if (breakpoint <= numberOfLines)
+              document.getElementById("breakpoint_icon_" + breakpoint).style.display = "inline";
+        };
         document.getElementById("assemblyCode").onscroll = () => {
           document
             .getElementById("lineNumbers")

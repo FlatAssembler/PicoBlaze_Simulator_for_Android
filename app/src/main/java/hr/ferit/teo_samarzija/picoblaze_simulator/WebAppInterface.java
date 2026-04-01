@@ -12,6 +12,7 @@ public class WebAppInterface {
     AssembledProgram assembledProgram;
     public String textDisplayedDuringAssembly;
     public java.util.TreeSet<Integer> forbiddenBreakpoints;
+    public java.util.TreeSet<Integer> breakpoints;
 
     WebAppInterface(Context context) {
         mContext = context;
@@ -21,6 +22,7 @@ public class WebAppInterface {
         assemblyCode = assembledProgram.assemblyCode;
         textDisplayedDuringAssembly = assembledProgram.terminalOutputDuringAssembly;
         forbiddenBreakpoints = assembledProgram.forbiddenBreakpoints;
+        breakpoints = assembledProgram.breakpoints;
     }
 
     @JavascriptInterface
@@ -124,10 +126,33 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
+    public void clearTheBreakpoints() {
+        breakpoints.clear();
+        assembledProgram.breakpoints = breakpoints;
+    }
+
+    @JavascriptInterface
+    public void setTheBreakpointAtLine(int line) {
+        breakpoints.add(line);
+        assembledProgram.breakpoints = breakpoints;
+    }
+
+    @JavascriptInterface
+    public String getBreakpointsJSON() {
+        String ret = "[";
+        for (int line : breakpoints) {
+            ret += line + ",";
+        }
+        ret = (ret.endsWith(",") ? ret.substring(0, ret.length() - 1): ret) + "]";
+        return ret;
+    }
+
+    @JavascriptInterface
     public void resetDisabledBreakpoints() {
         Log.d("PicoBlaze",
                 "Resetting the disabled breakpoints!");
         forbiddenBreakpoints.clear();
+        assembledProgram.forbiddenBreakpoints = forbiddenBreakpoints;
     }
 
     @JavascriptInterface
@@ -135,5 +160,6 @@ public class WebAppInterface {
         Log.d("PicoBlaze",
                 "Setting it so that a breakpoint cannot be set on the address " + Integer.toHexString(address) + ".");
         forbiddenBreakpoints.add(address);
+        assembledProgram.forbiddenBreakpoints=forbiddenBreakpoints;
     }
 }

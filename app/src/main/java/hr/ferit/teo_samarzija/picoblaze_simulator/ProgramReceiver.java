@@ -24,6 +24,7 @@ public class ProgramReceiver implements Callback<ResponseBody> {
     }
     try {
       AssembledProgram.getInstance().assemblyCode = response.body().string();
+      AssembledProgram.getInstance().breakpoints.clear();
     } catch (IOException e) {
       Toast.makeText(examples, e.getMessage(), Toast.LENGTH_LONG).show();
     }
