@@ -248,6 +248,7 @@
           return "Preprocessor error!";
         }
         console.log("Result of preprocessing: ", context);
+        const wasThereAnythingOnTheTerminal = PicoBlaze.isTerminalFull();
         PicoBlaze.flushTheTerminal();
         try {
           assemble(parsed, context);
@@ -271,7 +272,7 @@
         PicoBlaze.setAssemblyCode(
           document.getElementById("assemblyCode").innerHTML
         );
-        if (isEverythingZero) return "Assembler error or an empty program!";
+        if (isEverythingZero && !wasThereAnythingOnTheTerminal) return "Assembler error or an empty program!";
         return "Success!";
       }
       window.onload = () => {

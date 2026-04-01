@@ -111,6 +111,9 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
+    public boolean isTerminalFull(){return !textDisplayedDuringAssembly.isEmpty();}
+
+    @JavascriptInterface
     public void flushTheTerminal() {
         assembledProgram.terminalOutputDuringAssembly = textDisplayedDuringAssembly;
         if (!textDisplayedDuringAssembly.isEmpty()) {
