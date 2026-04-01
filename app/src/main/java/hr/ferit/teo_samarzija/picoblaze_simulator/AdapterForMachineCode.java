@@ -62,9 +62,9 @@ public class AdapterForMachineCode
         && !assembledProgram.forbiddenBreakpoints.contains(index))
     {
         Log.d("PicoBlaze","There appears to be a breakpoint on the line " + assembledProgram.lineNumbers[index]+", as the breakpoints are "+assembledProgram.breakpoints.toString()+", and the forbidden breakpoints are "+assembledProgram.forbiddenBreakpoints.toString());
-        holder.getAddressView().setBackgroundColor(Color.RED);
-        holder.getLineNumberView().setBackgroundColor(Color.RED);
-        holder.getMachineCodeView().setBackgroundColor(Color.RED);
+        holder.getAddressView().setBackground(getDrawable(holder.getAddressView().getContext(), R.drawable.table_background_marked));
+        holder.getLineNumberView().setBackground(getDrawable(holder.getLineNumberView().getContext(), R.drawable.table_background_marked));
+        holder.getMachineCodeView().setBackground(getDrawable(holder.getMachineCodeView().getContext(), R.drawable.table_background_marked));
     }
     else
     {
