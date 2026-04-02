@@ -77,6 +77,8 @@
         ret=ret*2+document.getElementById("switch_"+i).checked;
       return ret;
     }
+for (let i=0; i<8; i++)
+  document.getElementById("switch_"+i).onclick=()=>{PicoBlaze.setSwitches(getValueOfSwitches();};
 </script>
 <svg id="emptySVG"></svg>
 <section id="sevenSegmentDisplays">
