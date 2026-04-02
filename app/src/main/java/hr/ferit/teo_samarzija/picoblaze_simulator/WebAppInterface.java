@@ -13,6 +13,7 @@ public class WebAppInterface {
     public String textDisplayedDuringAssembly;
     public java.util.TreeSet<Integer> forbiddenBreakpoints;
     public java.util.TreeSet<Integer> breakpoints;
+    public simulation referenceToSimulation;
 
     WebAppInterface(Context context) {
         mContext = context;
@@ -161,5 +162,46 @@ public class WebAppInterface {
                 "Setting it so that a breakpoint cannot be set on the address " + Integer.toHexString(address) + ".");
         forbiddenBreakpoints.add(address);
         assembledProgram.forbiddenBreakpoints=forbiddenBreakpoints;
+    }
+
+    @JavascriptInterface
+    public String getTerminalOutput() {
+        return Simulator.getInstance().terminalOutput;
+    }
+
+    @JavascriptInterface
+    public int getFirstTwoHexadecimalDigits() {
+        if (Simulator.getInstance().output[1] < 0)
+            return 256 + Simulator.getInstance().output[1];
+        return Simulator.getInstance().output[1];
+    }
+
+    @JavascriptInterface
+    public int getLastTwoHexadecimalDigits() {
+        if (Simulator.getInstance().output[2] < 0)
+            return 256 + Simulator.getInstance().output[2];
+        return Simulator.getInstance().output[2];
+    }
+
+    @JavascriptInterface
+    public int getTheLEDs() {
+        if (Simulator.getInstance().output[0] < 0)
+            return 256 + Simulator.getInstance().output[0];
+        return Simulator.getInstance().output[0];
+    }
+
+    @JavascriptInterface
+    public void startTheSimulation() {
+        referenceToSimulation.startSimulation();
+    }
+
+    @JavascriptInterface
+    public void pauseTheSimulation() {
+        referenceToSimulation.stopSimulation();
+    }
+
+    @JavascriptInterface
+    public void setTerminalInput(String str) {
+        Simulator.getInstance().terminalInput = str;
     }
 }

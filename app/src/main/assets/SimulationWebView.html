@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+<head>
+    <title>PicoBlaze Simulator for Android - Simulation View</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+        #switches {
+            text-align:center;
+        }
+        #UART_input {
+            display: block;
+            background-color: black;
+            color: lightGreen;
+            padding: 5px;
+            width: calc(100% - 2 * 5px);
+            overflow: scroll;
+        }
+        .sevenSegmentDisplay {
+  background: black;
+  width: 50px;
+  height: 100px;
+  margin: 5px;
+  display: inline;
+}
+        #emptySVG {
+        display: none;
+        }
+        section {
+          margin: 5px;
+        }
+        .svgWithALED {
+          display: inline;
+          width: 10px;
+          height: 10px;
+        }
+        body {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: calc(100vh - 20px);
+        }
+        #UART_output {
+          width: calc(100% - 2 * 5px);
+          padding: 5px;
+          background-color: black;
+          height: 100px;
+          overflow: scroll;
+          color: lightGreen;
+        }
+    </style>
+</head>
+<body>
+<section id="div_with_UART_input">
+<label for="UART_input">UART input:</label><br/>
+<textarea id="UART_input"></textarea>
+</section>
+<script>
+    document.getElementById("UART_input").oninput = (event)=>{
+      PicoBlaze.setTerminalInput(event.target.value);
+    };
+</script>
+<section id="switches">
+    The binary switches:<br/>
+    <input type="checkbox" id="switch_0">
+    <input type="checkbox" id="switch_1">
+    <input type="checkbox" id="switch_2">
+    <input type="checkbox" id="switch_3">
+    <input type="checkbox" id="switch_4">
+    <input type="checkbox" id="switch_5">
+    <input type="checkbox" id="switch_6">
+    <input type="checkbox" id="switch_7">
+</section>
+<script>
+    function getTheValueOfSwitches() {
+      let ret = 0;
+      for (let i=0; i<8; i++)
+        ret=ret*2+document.getElementById("switch_"+i).checked;
+      return ret;
+    }
+</script>
+<svg id="emptySVG"></svg>
+<section id="sevenSegmentDisplays">
+    Seven-segment display SVGs:<br/>
+</section>
+<script>
+    const svgNS = document.getElementById("emptySVG").namespaceURI;
+    const sevenSegmentDisplays = document.getElementById("sevenSegmentDisplays");
+sevenSegmentDisplays.style.marginLeft = "auto";
+sevenSegmentDisplays.style.marginRight = "auto";
+sevenSegmentDisplays.style.textAlign = "center";
+for (let i = 0; i < 4; i++) {
+  let sevenSegmentDisplay = document.createElementNS(svgNS, "svg");
+  sevenSegmentDisplay.classList.add("sevenSegmentDisplay");
+  sevenSegmentDisplay.id = "sevenSegmentDisplay" + i;
+  const polygons = [
+    "15,5  35, 5 40,10 35,15 15,15 10,10", // Segment A (top)
+    "40,10 45,15 45,45 40,50 35,45 35,15", // Segment B (top-right)
+    "40,50 45,55 45,85 40,90 35,85 35,55", // Segment C (bottom-right)
+    "40,90 35,95 15,95 10,90 15,85 35,85", // Segment D (bottom)
+    "10,90  5,85  5,55 10,50 15,55 15,85", // Segment E (bottom-left)
+    "10,50  5,45  5,15 10,10 15,15 15,45", // Segment F (top-left)
+    "10,50 15,45 35,45 40,50 35,55 15,55", // Segment G (hyphen in the middle)
+  ];
+  for (const polygonPoints of polygons) {
+    let polygon = document.createElementNS(svgNS, "polygon");
+    if (polygons.indexOf(polygonPoints) === 6)
+      polygon.setAttribute("fill", "#ffaaaa");
+    else
+      polygon.setAttribute("fill", "#333333");
+    polygon.setAttribute("points", polygonPoints);
+    polygon.setAttribute("stroke", "black");
+    sevenSegmentDisplay.appendChild(polygon);
+  }
+  sevenSegmentDisplays.appendChild(sevenSegmentDisplay);
+}
+function displayHexadecimalNumber(display, number) {
+  if (!(display instanceof SVGElement) ||
+      display.classList[0] !== "sevenSegmentDisplay") {
+    if (playing)
+      clearInterval(simulationThread);
+    alert(
+        "The simulator crashed! Some part of the simulator attempted to display a hexadecmal number on something that's not an HTML element suited for that.");
+    return;
+  }
+  if (number < 0 || number > 15 || typeof number !== "number") {
+    if (playing)
+      clearInterval(simulationThread);
+    alert(
+        'The simulator crashed! Some part of the simulator tried to display "' +
+        number + '" as a hexadecimal digit.');
+  }
+  number = Math.floor(number);
+  const LEDs = [
+    "1111110", // 0
+    "0110000", // 1
+    "1101101", // 2
+    "1111001", // 3
+    "0110011", // 4
+    "1011011", // 5
+    "1011111", // 6
+    "1110000", // 7
+    "1111111", // 8
+    "1111011", // 9
+    "1110111", // A
+    "0011111", // b
+    "1001110", // c
+    "0111101", // d
+    "1001111", // E
+    "1000111", // F
+  ];
+  const LED = LEDs[number];
+  for (let i = 0; i < display.children.length; i++)
+    display.children[i].setAttribute("fill",
+                                     LED[i] === "0" ? "#333" : "#faa");
+}
+    displayHexadecimalNumber(document.getElementById("sevenSegmentDisplay0"), PicoBlaze.getFirstTwoHexadecimalDigits() >> 4);
+    displayHexadecimalNumber(document.getElementById("sevenSegmentDisplay1"), PicoBlaze.getFirstTwoHexadecimalDigits() & 0xf);
+    displayHexadecimalNumber(document.getElementById("sevenSegmentDisplay2"), PicoBlaze.getLastTwoHexadecimalDigits() >> 4);
+    displayHexadecimalNumber(document.getElementById("sevenSegmentDisplay3"), PicoBlaze.getLastTwoHexadecimalDigits() & 0xf);
+</script>
+<section style="text-align: center">
+    The 8 LEDs:<br/>
+    <svg class="svgWithALED">
+        <circle cx="5" cy="5" r="5" fill="lightGreen" id="LED_0"></circle>
+    </svg>
+    <svg class="svgWithALED">
+        <circle cx="5" cy="5" r="5" fill="lightGreen" id="LED_1"></circle>
+    </svg>
+    <svg class="svgWithALED">
+        <circle cx="5" cy="5" r="5" fill="lightGreen" id="LED_2"></circle>
+    </svg>
+    <svg class="svgWithALED">
+        <circle cx="5" cy="5" r="5" fill="lightGreen" id="LED_3"></circle>
+    </svg>
+    <svg class="svgWithALED">
+        <circle cx="5" cy="5" r="5" fill="lightGreen" id="LED_4"></circle>
+    </svg>
+    <svg class="svgWithALED">
+        <circle cx="5" cy="5" r="5" fill="lightGreen" id="LED_5"></circle>
+    </svg>
+    <svg class="svgWithALED">
+        <circle cx="5" cy="5" r="5" fill="lightGreen" id="LED_6"></circle>
+    </svg>
+    <svg class="svgWithALED">
+        <circle cx="5" cy="5" r="5" fill="lightGreen" id="LED_7"></circle>
+    </svg>
+</section>
+<script>
+let theValueOfLEDs = PicoBlaze.getTheLEDs().toString(2);
+    while (theValueOfLEDs.length < 8)
+        theValueOfLEDs = "0" + theValueOfLEDs;
+    for (let i=0; i<8; i++)
+        document.getElementById("LED_"+i).setAttribute("fill",theValueOfLEDs[i]?"#a7a":"#030");
+</script>
+<section>
+    The UART output:
+    <pre id="UART_output"></pre>
+</section>
+<script>
+    document.getElementById("UART_output").innerText = PicoBlaze.getTerminalOutput();
+</script>
+<section style="text-align: center">
+    <button id="playPauseButton"><img id="playPauseImage" src="play.svg" alt="Play"></button>
+</section>
+<script>
+    let isSimulationPlaying = false;
+    document.getElementById("playPauseButton").onclick=(event) => {
+        if (!isSimulationPlaying)
+        {
+            PicoBlaze.startTheSimulation();
+            document.getElementById("playPauseImage").src="pause.svg";
+            document.getElementById("playPauseImage").alt="Pause";
+        }
+        else
+        {
+            PicoBlaze.pauseTheSimulation();
+            document.getElementById("playPauseImage").src="play.svg";
+            document.getElementById("playPauseImage").alt="Play";
+        }
+        isSimulationPlaying = !isSimulationPlaying;
+    }
+</script>
+</body>
+</html>
