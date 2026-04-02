@@ -186,11 +186,14 @@ function displayHexadecimalNumber(display, number) {
     </svg>
 </section>
 <script>
+    function updateTheLEDs() {
 let theValueOfLEDs = PicoBlaze.getTheLEDs().toString(2);
     while (theValueOfLEDs.length < 8)
         theValueOfLEDs = "0" + theValueOfLEDs;
     for (let i=0; i<8; i++)
         document.getElementById("LED_"+i).setAttribute("fill",theValueOfLEDs[i]?"#a7a":"#030");
+}
+    updateTheLEDs();
 </script>
 <section>
     The UART output:

@@ -2,6 +2,7 @@ package hr.ferit.teo_samarzija.picoblaze_simulator;
 
 import android.util.Log;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.Stack;
@@ -53,6 +54,12 @@ public class Simulator {
             // Format the instruction as a 5-digit hex string for character-based parsing,
             // matching the JavaScript machineCode[PC].hex format.
             String hex = String.format("%05x", currentDirective);
+
+            if (program.breakpoints.contains(program.lineNumbers[PC]) && !program.forbiddenBreakpoints.contains(PC))
+            {
+                Toast.makeText(referenceToTheWebViewInSimulation.getContext(), "Reached a breakpoint on the line "+program.lineNumbers[PC], Toast.LENGTH_LONG).show();
+                referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+            }
 
             int port, firstRegister, secondRegister, firstValue, secondValue, result, value,
                     registerIndex, registerValue;
@@ -136,7 +143,12 @@ public class Simulator {
                                     (byte) (currentlyReadCharacterInUART < terminalInput.length()
                                             ? 0b00001000 /*U_RX_D*/ : 0);
                         }
-                    } else {
+                    }
+                    else if (port == 0)
+                    {
+                        //TODO: input from the 8 switches.
+                    }
+                    else {
                         // No general input port mechanism in Android version; return 0
                         registers[regbankIndex][firstRegister] = 0;
                     }
@@ -176,15 +188,31 @@ public class Simulator {
                     port = registers[regbankIndex][secondRegister] & 0xFF;
                     value = registers[regbankIndex][firstRegister] & 0xFF;
                     if (port == 3 || port == 4) {
-                        if (port == 3)
+                        if (port == 3) {
                             // UART_TX_PORT
                             terminalOutput += String.valueOf((char) value);
-                        else
+                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput+"\";", null);
+                        }
+                        else {
                             // UART_RESET_PORT
                             terminalOutput = "";
-                    } else {
+                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput+"\";", null);
+                        }
+                    } else if (port == 0) {
                         output[port] = (byte) value;
+                        referenceToTheWebViewInSimulation.evaluateJavascript("updateTheLEDs()", null);
                     }
+                    else if (port == 1) {
+                        output[port]= (byte) value;
+                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                    }
+                    else if (port == 2) {
+                        output[port]= (byte) value;
+                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                    }
+                    else {
+                            output[port] = (byte) value;
+                        }
                     PC++;
                     break;
                 }
@@ -231,6 +259,7 @@ public class Simulator {
                                         + hex + "\" (" + currentDirective + " & " + 0xff000 + " = "
                                         + (currentDirective & 0xff000) + "), assembled from line #"
                                         + program.lineNumbers[PC] + ".");
+                        referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
                         myTimer.cancel();
                         break;
                     }
@@ -658,6 +687,7 @@ public class Simulator {
                         PC = callStack.pop() + 1;
                     else {
                         Log.i("PicoBlaze", "The program exited!");
+                        referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
                         myTimer.cancel();
                     }
                     break;
@@ -668,6 +698,7 @@ public class Simulator {
                             PC = callStack.pop() + 1;
                         else {
                             Log.i("PicoBlaze", "The program exited!");
+                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
                             myTimer.cancel();
                         }
                     } else
@@ -680,6 +711,7 @@ public class Simulator {
                             PC = callStack.pop() + 1;
                         else {
                             Log.i("PicoBlaze", "The program exited!");
+                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
                             myTimer.cancel();
                         }
                     } else
@@ -692,6 +724,7 @@ public class Simulator {
                             PC = callStack.pop() + 1;
                         else {
                             Log.i("PicoBlaze", "The program exited!");
+                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
                             myTimer.cancel();
                         }
                     } else
@@ -704,6 +737,7 @@ public class Simulator {
                             PC = callStack.pop() + 1;
                         else {
                             Log.i("PicoBlaze", "The program exited!");
+                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
                             myTimer.cancel();
                         }
                     } else
@@ -721,6 +755,7 @@ public class Simulator {
                         PC = callStack.pop() + 1;
                     else {
                         Log.i("PicoBlaze", "The program exited!");
+                        referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
                         myTimer.cancel();
                     }
                     break;
@@ -730,10 +765,12 @@ public class Simulator {
                                     + hex + "\" (" + currentDirective + " & " + 0xff000 + " = "
                                     + (currentDirective & 0xff000) + "), assembled from line #"
                                     + program.lineNumbers[PC] + ".");
+                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
                     myTimer.cancel();
             }
         } catch (Exception error) {
             Log.e("PicoBlaze", "The simulator crashed! Error: " + error.getMessage());
+            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
             myTimer.cancel();
         }
     }
