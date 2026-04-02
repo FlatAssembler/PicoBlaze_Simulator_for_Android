@@ -22,6 +22,7 @@ public class Simulator {
     public Stack<Integer> callStack;
     public int currentlyReadCharacterInUART;
     Timer myTimer;
+    public int switches;
 
     public WebView referenceToTheWebViewInSimulation;
     private Simulator() {
@@ -147,6 +148,7 @@ public class Simulator {
                     else if (port == 0)
                     {
                         //TODO: input from the 8 switches.
+registers[regbankIndex][firstRegister] = switches;
                     }
                     else {
                         // No general input port mechanism in Android version; return 0
