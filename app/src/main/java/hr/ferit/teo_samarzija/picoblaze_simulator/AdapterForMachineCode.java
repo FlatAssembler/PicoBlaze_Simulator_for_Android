@@ -2,7 +2,6 @@ package hr.ferit.teo_samarzija.picoblaze_simulator;
 
 import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,9 +91,9 @@ public class AdapterForMachineCode
     private final TextView lineNumberView;
     public ViewHolder(View view) {
       super(view);
-      addressView = view.findViewById(R.id.address);
-      machineCodeView = view.findViewById(R.id.machineCodeDirective);
-      lineNumberView = view.findViewById(R.id.lineNumber);
+      addressView = view.findViewById(R.id.register_name);
+      machineCodeView = view.findViewById(R.id.regbank_a);
+      lineNumberView = view.findViewById(R.id.regbank_b);
     }
 
     public TextView getAddressView() { return addressView; }

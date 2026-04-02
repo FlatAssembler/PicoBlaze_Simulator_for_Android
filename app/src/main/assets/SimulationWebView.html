@@ -78,7 +78,7 @@
       return ret;
     }
 for (let i=0; i<8; i++)
-  document.getElementById("switch_"+i).onclick=()=>{PicoBlaze.setSwitches(getValueOfSwitches();};
+  document.getElementById("switch_"+i).onclick=()=>{PicoBlaze.setSwitches(getTheValueOfSwitches());};
 </script>
 <svg id="emptySVG"></svg>
 <section id="sevenSegmentDisplays">
@@ -190,10 +190,11 @@ function displayHexadecimalNumber(display, number) {
 <script>
     function updateTheLEDs() {
 let theValueOfLEDs = PicoBlaze.getTheLEDs().toString(2);
+console.log("The LEDs are updated to: " + theValueOfLEDs);
     while (theValueOfLEDs.length < 8)
         theValueOfLEDs = "0" + theValueOfLEDs;
     for (let i=0; i<8; i++)
-        document.getElementById("LED_"+i).setAttribute("fill",theValueOfLEDs[i]?"#a7a":"#030");
+        document.getElementById("LED_"+i).setAttribute("fill",(theValueOfLEDs[i] | 0)?"#afa":"#030");
 }
     updateTheLEDs();
 </script>
@@ -210,19 +211,21 @@ let theValueOfLEDs = PicoBlaze.getTheLEDs().toString(2);
 <script>
     let isSimulationPlaying = false;
     document.getElementById("playPauseButton").onclick=(event) => {
+        console.log("The playPauseButton is pressed and the simulation "+(isSimulationPlaying?"is":"isn't")+" playing!");
         if (!isSimulationPlaying)
         {
-            PicoBlaze.startTheSimulation();
             document.getElementById("playPauseImage").src="pause.svg";
             document.getElementById("playPauseImage").alt="Pause";
+            isSimulationPlaying = !isSimulationPlaying;
+            PicoBlaze.startTheSimulation();
         }
         else
         {
-            PicoBlaze.pauseTheSimulation();
             document.getElementById("playPauseImage").src="play.svg";
             document.getElementById("playPauseImage").alt="Play";
+            isSimulationPlaying = !isSimulationPlaying;
+            PicoBlaze.pauseTheSimulation();
         }
-        isSimulationPlaying = !isSimulationPlaying;
     }
 </script>
 </body>

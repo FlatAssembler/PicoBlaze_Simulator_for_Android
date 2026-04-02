@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class registerDump extends AppCompatActivity {
 
@@ -11,6 +12,8 @@ public class registerDump extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.register_dump);
+    RecyclerView recyclerView = findViewById(R.id.recyclerViewWithRegisters);
+    recyclerView.setAdapter(new AdapterForRegisterDumping());
   }
   public void continueSimulating(View view) {
     Intent intent = new Intent(this, simulation.class);

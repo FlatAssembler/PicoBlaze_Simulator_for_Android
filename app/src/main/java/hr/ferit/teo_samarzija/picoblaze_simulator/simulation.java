@@ -7,6 +7,8 @@ import android.view.View;
 import android.webkit.WebView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Timer;
+
 public class simulation extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,8 @@ public class simulation extends AppCompatActivity {
   }
   public void startSimulation() {
     Log.d("PicoBlaze","Starting the simulation");
-    Simulator.getInstance().myTimer.schedule(new MyTimerTask(), 100, 100);
+    Simulator.getInstance().myTimer=new Timer();
+    Simulator.getInstance().myTimer.schedule(new MyTimerTask(), 10, 1);
   }
 
   public void stopSimulation() {

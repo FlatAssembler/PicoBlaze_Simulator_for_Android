@@ -58,8 +58,14 @@ public class Simulator {
 
             if (program.breakpoints.contains(program.lineNumbers[PC]) && !program.forbiddenBreakpoints.contains(PC))
             {
-                Toast.makeText(referenceToTheWebViewInSimulation.getContext(), "Reached a breakpoint on the line "+program.lineNumbers[PC], Toast.LENGTH_LONG).show();
-                referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                referenceToTheWebViewInSimulation.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(referenceToTheWebViewInSimulation.getContext(), "Reached a breakpoint on the line "+program.lineNumbers[PC], Toast.LENGTH_LONG).show();
+                        referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseImage\").src=\"play.svg\"; document.getElementById(\"playPauseImage\").alt=\"Play\"; isSimulationPlaying = false;", null);
+                        myTimer.cancel();
+                    }
+                });
             }
 
             int port, firstRegister, secondRegister, firstValue, secondValue, result, value,
@@ -147,7 +153,7 @@ public class Simulator {
                     }
                     else if (port == 0)
                     {
-registers[regbankIndex][firstRegister] = switches;
+registers[regbankIndex][firstRegister] = (byte)switches;
                     }
                     else {
                         // No general input port mechanism in Android version; return 0
@@ -177,7 +183,7 @@ registers[regbankIndex][firstRegister] = switches;
                     } 
 else if (port == 0)
                     {
-registers[regbankIndex][firstRegister] = switches;
+registers[regbankIndex][firstRegister] = (byte)switches;
                     }
 else {
                         // No general input port mechanism in Android version; return 0
@@ -197,24 +203,49 @@ else {
                         if (port == 3) {
                             // UART_TX_PORT
                             terminalOutput += String.valueOf((char) value);
-                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput+"\";", null);
+                            referenceToTheWebViewInSimulation.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput.replaceAll("\n", "\\\\n")+"\";", null);
+                                }
+                            });
                         }
                         else {
                             // UART_RESET_PORT
                             terminalOutput = "";
-                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput+"\";", null);
+                            referenceToTheWebViewInSimulation.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput.replaceAll("\n", "\\\\n")+"\";", null);
+                                }
+                            });
                         }
                     } else if (port == 0) {
                         output[port] = (byte) value;
-                        referenceToTheWebViewInSimulation.evaluateJavascript("updateTheLEDs()", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("updateTheLEDs();", null);
+                            }
+                        });
                     }
                     else if (port == 1) {
                         output[port]= (byte) value;
-                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                            }
+                        });
                     }
                     else if (port == 2) {
                         output[port]= (byte) value;
-                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                            }
+                        });
                     }
                     else {
                             output[port] = (byte) value;
@@ -234,17 +265,41 @@ else {
                         else
                             // UART_RESET_PORT
                             terminalOutput = "";
-referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput+"\";", null);
-                    } 
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput.replaceAll("\n", "\\\\n")+"\";", null);
+                            }
+                        });
+                    }
+                    else if (port == 0) {
+                        output[port] = (byte) value;
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("updateTheLEDs();", null);
+                            }
+                        });
+                    }
 else if (port == 1) {
                         output[port]= (byte) value;
-                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                            }
+                        });
                     }
                     else if (port == 2) {
                         output[port]= (byte) value;
-                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                            }
+                        });
                     }
-else {
+                    else {
                         output[port] = (byte) value;
                     }
                     PC++;
@@ -261,15 +316,30 @@ else {
                         else
                             // UART_RESET_PORT
                             terminalOutput = "";
-referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput+"\";", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput.replaceAll("\n", "\\\\n")+"\";", null);
+                            }
+                        });
                     }
 else if (port == 1) {
                         output[port]= (byte) value;
-                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                            }
+                        });
                     }
                     else if (port == 2) {
                         output[port]= (byte) value;
-                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                            }
+                        });
                     }
  else {
                         output[port] = (byte) value;
@@ -285,7 +355,12 @@ else if (port == 1) {
                                         + hex + "\" (" + currentDirective + " & " + 0xff000 + " = "
                                         + (currentDirective & 0xff000) + "), assembled from line #"
                                         + program.lineNumbers[PC] + ".");
-                        referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                            }
+                        });
                         myTimer.cancel();
                         break;
                     }
@@ -713,7 +788,12 @@ else if (port == 1) {
                         PC = callStack.pop() + 1;
                     else {
                         Log.i("PicoBlaze", "The program exited!");
-                        referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                            }
+                        });
                         myTimer.cancel();
                     }
                     break;
@@ -724,7 +804,12 @@ else if (port == 1) {
                             PC = callStack.pop() + 1;
                         else {
                             Log.i("PicoBlaze", "The program exited!");
-                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                            referenceToTheWebViewInSimulation.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                                }
+                            });
                             myTimer.cancel();
                         }
                     } else
@@ -737,7 +822,12 @@ else if (port == 1) {
                             PC = callStack.pop() + 1;
                         else {
                             Log.i("PicoBlaze", "The program exited!");
-                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                            referenceToTheWebViewInSimulation.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                                }
+                            });
                             myTimer.cancel();
                         }
                     } else
@@ -750,7 +840,12 @@ else if (port == 1) {
                             PC = callStack.pop() + 1;
                         else {
                             Log.i("PicoBlaze", "The program exited!");
-                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                            referenceToTheWebViewInSimulation.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                                }
+                            });
                             myTimer.cancel();
                         }
                     } else
@@ -763,7 +858,12 @@ else if (port == 1) {
                             PC = callStack.pop() + 1;
                         else {
                             Log.i("PicoBlaze", "The program exited!");
-                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                            referenceToTheWebViewInSimulation.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                                }
+                            });
                             myTimer.cancel();
                         }
                     } else
@@ -781,7 +881,12 @@ else if (port == 1) {
                         PC = callStack.pop() + 1;
                     else {
                         Log.i("PicoBlaze", "The program exited!");
-                        referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                        referenceToTheWebViewInSimulation.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                            }
+                        });
                         myTimer.cancel();
                     }
                     break;
@@ -791,12 +896,22 @@ else if (port == 1) {
                                     + hex + "\" (" + currentDirective + " & " + 0xff000 + " = "
                                     + (currentDirective & 0xff000) + "), assembled from line #"
                                     + program.lineNumbers[PC] + ".");
-                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                    referenceToTheWebViewInSimulation.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                        }
+                    });
                     myTimer.cancel();
             }
         } catch (Exception error) {
             Log.e("PicoBlaze", "The simulator crashed! Error: " + error.getMessage());
-            referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+            referenceToTheWebViewInSimulation.post(new Runnable() {
+                @Override
+                public void run() {
+                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                }
+            });
             myTimer.cancel();
         }
     }
