@@ -204,4 +204,9 @@ public class WebAppInterface {
     public void setTerminalInput(String str) {
         Simulator.getInstance().terminalInput = str;
     }
+
+@JavascriptInterface
+public void setSwitches(int switches) {
+Simulator.getInstance().switches = switches;
+}
 }
