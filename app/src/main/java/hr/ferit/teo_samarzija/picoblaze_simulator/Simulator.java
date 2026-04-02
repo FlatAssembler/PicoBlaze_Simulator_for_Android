@@ -234,7 +234,17 @@ else {
                         else
                             // UART_RESET_PORT
                             terminalOutput = "";
-                    } else {
+referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput+"\";", null);
+                    } 
+else if (port == 1) {
+                        output[port]= (byte) value;
+                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                    }
+                    else if (port == 2) {
+                        output[port]= (byte) value;
+                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                    }
+else {
                         output[port] = (byte) value;
                     }
                     PC++;
@@ -251,7 +261,17 @@ else {
                         else
                             // UART_RESET_PORT
                             terminalOutput = "";
-                    } else {
+referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"UART_output\").innerHTML=\""+terminalOutput+"\";", null);
+                    }
+else if (port == 1) {
+                        output[port]= (byte) value;
+                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay0\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay1\"), "+ (value & 0xf) +");", null);
+                    }
+                    else if (port == 2) {
+                        output[port]= (byte) value;
+                        referenceToTheWebViewInSimulation.evaluateJavascript("displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay2\"), "+ (value >> 4) +"); displayHexadecimalNumber(document.getElementById(\"sevenSegmentDisplay3\"), "+ (value & 0xf) +");", null);
+                    }
+ else {
                         output[port] = (byte) value;
                     }
                     PC++;
