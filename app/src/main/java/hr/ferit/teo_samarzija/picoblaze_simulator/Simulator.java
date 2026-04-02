@@ -147,7 +147,6 @@ public class Simulator {
                     }
                     else if (port == 0)
                     {
-                        //TODO: input from the 8 switches.
 registers[regbankIndex][firstRegister] = switches;
                     }
                     else {
@@ -175,7 +174,12 @@ registers[regbankIndex][firstRegister] = switches;
                                     (byte) (currentlyReadCharacterInUART < terminalInput.length()
                                             ? 0b00001000 /*U_RX_D*/ : 0);
                         }
-                    } else {
+                    } 
+else if (port == 0)
+                    {
+registers[regbankIndex][firstRegister] = switches;
+                    }
+else {
                         // No general input port mechanism in Android version; return 0
                         registers[regbankIndex][firstRegister] = 0;
                     }
