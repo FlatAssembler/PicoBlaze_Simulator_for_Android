@@ -32,7 +32,7 @@ public class simulation extends AppCompatActivity {
   }
   public void startSimulation() {
     Log.d("PicoBlaze","Starting the simulation");
-    Simulator.getInstance().myTimer.schedule(new MyTimerTask(), 10, 10);
+    Simulator.getInstance().myTimer.schedule(new MyTimerTask(), 100, 100);
   }
 
   public void stopSimulation() {
