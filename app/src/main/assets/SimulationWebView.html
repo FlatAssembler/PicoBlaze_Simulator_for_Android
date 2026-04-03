@@ -207,6 +207,7 @@ console.log("The LEDs are updated to: " + theValueOfLEDs);
 </script>
 <section style="text-align: center">
     <button id="playPauseButton"><img id="playPauseImage" src="play.svg" alt="Play"></button>
+    <button id="resetButton">Reset</button>
 </section>
 <script>
     let isSimulationPlaying = false;
@@ -226,6 +227,14 @@ console.log("The LEDs are updated to: " + theValueOfLEDs);
             isSimulationPlaying = !isSimulationPlaying;
             PicoBlaze.pauseTheSimulation();
         }
+    };
+    document.getElementById("resetButton").onclick = ()=>{
+        for (let i=0; i<4; i++)
+            displayHexadecimalNumber(document.getElementById("sevenSegmentDisplay"+i),0);
+        for (let i=0; i<8; i++)
+            document.getElementById("LED_"+i).setAttribute("fill","#030");
+        PicoBlaze.resetPicoBlaze();
+        document.getElementById("UART_output").innerHTML = PicoBlaze.getTerminalOutput();
     }
 </script>
 </body>

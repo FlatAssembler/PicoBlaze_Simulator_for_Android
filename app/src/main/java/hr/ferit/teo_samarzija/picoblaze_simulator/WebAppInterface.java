@@ -5,6 +5,8 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
+import java.util.Stack;
+
 public class WebAppInterface {
     public int[] instructions, lineNumbers;
     Context mContext;
@@ -205,8 +207,24 @@ public class WebAppInterface {
         Simulator.getInstance().terminalInput = str;
     }
 
-@JavascriptInterface
-public void setSwitches(int switches) {
+    @JavascriptInterface
+    public void setSwitches(int switches) {
 Simulator.getInstance().switches = switches;
 }
+
+@JavascriptInterface
+    public void resetPicoBlaze() {
+        Simulator.getInstance().terminalOutput=AssembledProgram.getInstance().terminalOutputDuringAssembly;
+        Simulator.getInstance().output = new byte[256];
+        Simulator.getInstance().regbank=false;
+        Simulator.getInstance().currentlyReadCharacterInUART = 0;
+        Simulator.getInstance().PC = 0;
+        Simulator.getInstance().registers = new byte[2][];
+        Simulator.getInstance().registers[0]= new byte[16];
+        Simulator.getInstance().registers[1]= new byte[16];
+        Simulator.getInstance().flagC = new int[2];
+        Simulator.getInstance().flagIE = 0;
+        Simulator.getInstance().flagZ = new int[2];
+        Simulator.getInstance().callStack = new Stack<>();
+    }
 }
