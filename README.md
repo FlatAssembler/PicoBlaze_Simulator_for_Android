@@ -2,8 +2,8 @@
 This is my attempt to modify the [PicoBlaze Simulator in JavaScript](https://flatassembler.github.io/PicoBlaze/PicoBlaze.html), so that it can be run on Android without an Internet connection. This version is written in a combination of JavaScript and Java, and uses the V8 JavaScript engine built into Android. The assembler and the related files are kept in JavaScript and communicate with the Java main program using V8, whereas the emulator is rewritten from JavaScript to Java using AI.
 
 # Screenshots
-![The main activity](https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155325_PicoBlaze%20Simulator-4cb906a8.jpg/max/max/1)
-![Setting up the breakpoints](https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155350_PicoBlaze%20Simulator-5b2e3352.jpg/max/max/1)
-![Viewing the machine code](https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155405_PicoBlaze%20Simulator-6826950e.jpg/max/max/1)
-![The emulator](https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155441_PicoBlaze%20Simulator-77869792.jpg/max/max/1)
-![The register dump](https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155455_PicoBlaze%20Simulator-844a5f4a.jpg/max/max/1)
+<img src="https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155325_PicoBlaze%20Simulator-4cb906a8.jpg/max/max/1" width="250" alt="The main activity">
+<img src="https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155350_PicoBlaze%20Simulator-5b2e3352.jpg/max/max/1" width="250" alt="Setting up the breakpoints">
+<img src="https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155405_PicoBlaze%20Simulator-6826950e.jpg/max/max/1" width="250" alt="Viewing the machine code">
+<img src="https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155441_PicoBlaze%20Simulator-77869792.jpg/max/max/1" width="250" alt="The emulator">
+<img src="https://a.fsdn.com/con/app/proj/picoblaze-android/screenshots/Screenshot_20260403_155455_PicoBlaze%20Simulator-844a5f4a.jpg/max/max/1" width="250" alt="The register dump">
