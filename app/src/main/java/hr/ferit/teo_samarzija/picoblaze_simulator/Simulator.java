@@ -668,7 +668,7 @@ public class Simulator {
                             int oldFlagC = flagC[regbankIndex];
                             flagC[regbankIndex] = registerValue % 2;
                             flagZ[regbankIndex] = (registerValue / 2 == 0) ? 1 : 0;
-                            registerValue = (registerValue >> 1) | (oldFlagC << 7);
+                            registerValue = (registerValue >> 1) | (oldFlagC << 7); // https://github.com/FlatAssembler/PicoBlaze_Simulator_in_JS/issues/9
                             break;
                         }
                         case "0c": // RR
