@@ -683,6 +683,14 @@ public class Simulator {
                             Log.e("PicoBlaze", "The instruction \"" + hex
                                     + "\", assembled from line #" + program.lineNumbers[PC]
                                     + ", hasn't been implemented yet, sorry about that!");
+                            referenceToTheWebViewInSimulation.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    referenceToTheWebViewInSimulation.evaluateJavascript("document.getElementById(\"playPauseButton\").click()", null);
+                                }
+                            });
+                            myTimer.cancel();
+                            return;
                     }
                     registers[regbankIndex][registerIndex] = (byte) (registerValue & 0xFF);
                     PC++;
