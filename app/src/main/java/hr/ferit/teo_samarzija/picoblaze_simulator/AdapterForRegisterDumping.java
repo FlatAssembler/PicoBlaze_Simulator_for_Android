@@ -34,7 +34,7 @@ public class AdapterForRegisterDumping extends RecyclerView.Adapter<AdapterForRe
             holder.getRegbankBView().setTypeface(null, BOLD);
             return;
         }
-        Simulator simulator = Simulator.getInstance();
+        Simulator simulator = Simulator.instance.getInstance();
         holder.getRegisterNameView().setText(String.format("s%x", position - 1));
         holder.getRegbankAView().setText(String.format("%02x",simulator.registers[0][position - 1]));
         holder.getRegbankBView().setText(String.format("%02x",simulator.registers[1][position - 1]));
