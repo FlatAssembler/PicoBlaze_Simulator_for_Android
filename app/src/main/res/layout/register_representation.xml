@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="4">
+    android:weightSum="3">
 
     <TextView
         android:id="@+id/register_name"
@@ -11,10 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/table_background"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:gravity="center"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/regbank_a"
@@ -22,10 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:background="@drawable/table_background"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:gravity="center"/>
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/regbank_b"
@@ -33,9 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/table_background"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:gravity="center"/>
+        android:textSize="18sp" />
 
 </LinearLayout>

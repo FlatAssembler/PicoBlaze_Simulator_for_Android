@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,8 +33,10 @@ public class AdapterForRegisterDumping extends RecyclerView.Adapter<AdapterForRe
             holder.getRegbankAView().setTypeface(null, BOLD);
             holder.getRegbankBView().setText("Regbank B");
             holder.getRegbankBView().setTypeface(null, BOLD);
-            holder.getRegbankAView().LayoutParams.weight = 1;
-holder.getRegbankBView().setVisibility(VISIBLE);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.getRegbankAView().getLayoutParams();
+            params.weight = 1;
+            holder.getRegbankAView().setLayoutParams(params);
+            holder.getRegbankBView().setVisibility(View.VISIBLE);
             return;
         }
         Simulator simulator = Simulator.instance.getInstance();
@@ -41,13 +44,20 @@ holder.getRegbankBView().setVisibility(VISIBLE);
 
         holder.getRegisterNameView().setText("PC");
         holder.getRegbankAView().setText(String.format("%03x", simulator.PC));
-        holder.getRegbankAView().LayoutParams.weight = 2;
-        holder.getRegbankBView().setVisibility(GONE);
-return;
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.getRegbankAView().getLayoutParams();
+        params.weight = 2;
+        holder.getRegbankAView().setLayoutParams(params);
+        holder.getRegbankBView().setVisibility(View.GONE);
+            holder.getRegisterNameView().setTypeface(null, NORMAL);
+            holder.getRegbankAView().setTypeface(null, NORMAL);
+            holder.getRegbankBView().setTypeface(null, NORMAL);
+        return;
         }
         else {
-          holder.getRegbankAView().LayoutParams.weight = 1;
-        holder.getRegbankBView().setVisibility(VISIBLE);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.getRegbankAView().getLayoutParams();
+            params.weight = 1;
+            holder.getRegbankAView().setLayoutParams(params);
+            holder.getRegbankBView().setVisibility(View.VISIBLE);
         }
  holder.getRegisterNameView().setText(String.format("s%x", position - 1));
         holder.getRegbankAView().setText(String.format("%02x",simulator.registers[0][position - 1]));
