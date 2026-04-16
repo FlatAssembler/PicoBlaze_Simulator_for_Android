@@ -32,10 +32,24 @@ public class AdapterForRegisterDumping extends RecyclerView.Adapter<AdapterForRe
             holder.getRegbankAView().setTypeface(null, BOLD);
             holder.getRegbankBView().setText("Regbank B");
             holder.getRegbankBView().setTypeface(null, BOLD);
+            holder.getRegbankAView().setLayoutWidth(1);
+holder.getRegbankBView().setVisibility(VISIBLE);
             return;
         }
         Simulator simulator = Simulator.instance.getInstance();
-        holder.getRegisterNameView().setText(String.format("s%x", position - 1));
+        if (position == 17) {
+
+        holder.getRegisterNameView().setText("PC");
+        holder.getRegbankAView().setText(String.format("%03x", simulator.PC));
+        holder.getRegbankAView().setLayoutWidth(2);
+        holder.getRegbankBView().setVisibility(GONE);
+return;
+        }
+        else {
+          holder.getRegbankAView().setLayoutWidth(1);
+        holder.getRegbankBView().setVisibility(VISIBLE);
+        }
+ holder.getRegisterNameView().setText(String.format("s%x", position - 1));
         holder.getRegbankAView().setText(String.format("%02x",simulator.registers[0][position - 1]));
         holder.getRegbankBView().setText(String.format("%02x",simulator.registers[1][position - 1]));
         holder.getRegisterNameView().setTypeface(null, NORMAL);
@@ -45,7 +59,7 @@ public class AdapterForRegisterDumping extends RecyclerView.Adapter<AdapterForRe
 
     @Override
     public int getItemCount() {
-        return 17;
+        return 16 + 1 + 1;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
