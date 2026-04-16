@@ -32,7 +32,7 @@ public class AdapterForRegisterDumping extends RecyclerView.Adapter<AdapterForRe
             holder.getRegbankAView().setTypeface(null, BOLD);
             holder.getRegbankBView().setText("Regbank B");
             holder.getRegbankBView().setTypeface(null, BOLD);
-            holder.getRegbankAView().setLayoutWidth(1);
+            holder.getRegbankAView().LayoutParams.weight = 1;
 holder.getRegbankBView().setVisibility(VISIBLE);
             return;
         }
@@ -41,12 +41,12 @@ holder.getRegbankBView().setVisibility(VISIBLE);
 
         holder.getRegisterNameView().setText("PC");
         holder.getRegbankAView().setText(String.format("%03x", simulator.PC));
-        holder.getRegbankAView().setLayoutWidth(2);
+        holder.getRegbankAView().LayoutParams.weight = 2;
         holder.getRegbankBView().setVisibility(GONE);
 return;
         }
         else {
-          holder.getRegbankAView().setLayoutWidth(1);
+          holder.getRegbankAView().LayoutParams.weight = 1;
         holder.getRegbankBView().setVisibility(VISIBLE);
         }
  holder.getRegisterNameView().setText(String.format("s%x", position - 1));
