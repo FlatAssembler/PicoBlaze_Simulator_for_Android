@@ -679,49 +679,49 @@ class Simulator private constructor() {
                                 Integer.toHexString(registerIndex)
                     )
                     when (hex.substring(3)) {
-                        "06" -> {
+                        "06" -> { // SL0
                             registerValue = registerValue shl 1
                             flagC[regbankIndex] = if (registerValue > 255) 1 else 0
                             flagZ[regbankIndex] = if (registerValue % 256 == 0) 1 else 0
                         }
 
-                        "07" -> {
+                        "07" -> { // SL1
                             registerValue = (registerValue shl 1) + 1
                             flagC[regbankIndex] = if (registerValue > 255) 1 else 0
                             flagZ[regbankIndex] = if (registerValue % 256 == 0) 1 else 0
                         }
 
-                        "04" -> {
+                        "04" -> { // SLX
                             registerValue = (registerValue shl 1) + (registerValue % 2)
                             flagC[regbankIndex] = if (registerValue > 255) 1 else 0
                             flagZ[regbankIndex] = if (registerValue % 256 == 0) 1 else 0
                         }
 
-                        "00" -> {
+                        "00" -> { // SLA
                             registerValue = (registerValue shl 1) + flagC[regbankIndex]
                             flagC[regbankIndex] = if (registerValue > 255) 1 else 0
                             flagZ[regbankIndex] = if (registerValue % 256 == 0) 1 else 0
                         }
 
-                        "02" -> {
+                        "02" -> { // RL
                             registerValue = (registerValue shl 1) + (registerValue / 128)
                             flagC[regbankIndex] = if (registerValue > 255) 1 else 0
                             flagZ[regbankIndex] = if (registerValue % 256 == 0) 1 else 0
                         }
 
-                        "0e" -> {
+                        "0e" -> { // SR0
                             flagC[regbankIndex] = registerValue % 2
                             flagZ[regbankIndex] = if (registerValue / 2 == 0) 1 else 0
                             registerValue = registerValue shr 1
                         }
 
-                        "0f" -> {
+                        "0f" -> { // SR1
                             flagC[regbankIndex] = registerValue % 2
                             flagZ[regbankIndex] = if (registerValue / 2 == 0) 1 else 0
                             registerValue = (registerValue shr 1) + 128
                         }
 
-                        "0a" -> {
+                        "0a" -> { // SRX
                             flagC[regbankIndex] = registerValue % 2
                             flagZ[regbankIndex] = if (registerValue / 2 == 0) 1 else 0
                             registerValue = (registerValue shr 1) + (registerValue / 128) * 128
@@ -736,13 +736,13 @@ class Simulator private constructor() {
                                 (registerValue shr 1) or (oldFlagC shl 7) // https://github.com/FlatAssembler/PicoBlaze_Simulator_in_JS/issues/9
                         }
 
-                        "0c" -> {
+                        "0c" -> { // RR
                             flagC[regbankIndex] = registerValue % 2
                             flagZ[regbankIndex] = if (registerValue / 2 == 0) 1 else 0
                             registerValue = (registerValue shr 1) + 128 * (registerValue % 2)
                         }
 
-                        "80" -> flagC[regbankIndex] = 1
+                        "80" -> flagC[regbankIndex] = 1 // HWBUILD (not a bit-shifting instruction)
                         else -> {
                             Log.e(
                                 "PicoBlaze", ("The instruction \"" + hex
