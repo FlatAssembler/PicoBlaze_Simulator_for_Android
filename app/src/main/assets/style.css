@@ -6,7 +6,7 @@
   text-align: right;
   background: #aaaaaa;
   height: 100vh;
-  max-height: 400px;
+  /*max-height: 400px;*/
   position: absolute;
   overflow: hidden;
   font-size: 1em;
@@ -20,7 +20,7 @@
   display: inline-block;
   background: #eeeeee;
   height: 100vh;
-  max-height: 400px;
+  /*max-height: 400px;*/
   position: absolute;
   left: 60px;
   overflow: scroll;
