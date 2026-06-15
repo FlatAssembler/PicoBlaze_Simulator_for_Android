@@ -85,6 +85,13 @@ public class WebAppInterface {
 
     @JavascriptInterface
     public String getAssemblyCode() {
+
+        if (assembledProgram.assemblyCode == null ||
+                assembledProgram.assemblyCode.isEmpty()) {
+
+            return ";Insert assembly here...";
+        }
+
         return assembledProgram.assemblyCode;
     }
 

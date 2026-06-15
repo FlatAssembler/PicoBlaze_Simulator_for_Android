@@ -278,26 +278,31 @@
         if (isEverythingZero && !wasThereAnythingOnTheTerminal) return "Assembler error or an empty program!";
         return "Success!";
       }
+
       window.onload = () => {
+
+    try {
+        console.log("STEP 1");
+
         if (typeof PicoBlaze === "object") {
-          document.getElementById("assemblyCode").innerHTML =
-            PicoBlaze.getAssemblyCode();
-          setUpLineNumbers();
-          breakpoints = JSON.parse(PicoBlaze.getBreakpointsJSON());
-          const numberOfLines = Math.max(
-            (document.getElementById("assemblyCode").innerText.match(/\n/g) || []).length,
-            1
-          );
-          for (breakpoint of breakpoints)
-            if (breakpoint <= numberOfLines)
-              document.getElementById("breakpoint_icon_" + breakpoint).style.display = "inline";
-        };
-        document.getElementById("assemblyCode").onscroll = () => {
-          document
-            .getElementById("lineNumbers")
-            .scroll(0, document.getElementById("assemblyCode").scrollTop);
-        };
-      };
+
+            console.log("STEP 2");
+
+           document.getElementById("assemblyCode").innerHTML =
+    PicoBlaze.getAssemblyCode();
+
+            console.log("STEP 3");
+        }
+
+    } catch (e) {
+
+        console.log("ERROR:");
+        console.log(e);
+
+        document.body.innerHTML =
+            "<h1>JS ERROR</h1><pre>" + e + "</pre>";
+    }
+};
     </script>
   </head>
   <body>
