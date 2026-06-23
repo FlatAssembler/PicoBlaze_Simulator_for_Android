@@ -291,6 +291,14 @@
            document.getElementById("assemblyCode").innerHTML =
     PicoBlaze.getAssemblyCode();
            setUpLineNumbers();
+           breakpoints = JSON.parse(PicoBlaze.getBreakpointsJSON());
+          const numberOfLines = Math.max(
+            (document.getElementById("assemblyCode").innerText.match(/\n/g) || []).length,
+            1
+          );
+          for (breakpoint of breakpoints)
+            if (breakpoint <= numberOfLines)
+              document.getElementById("breakpoint_icon_" + breakpoint).style.display = "inline";
 
             console.log("STEP 3");
         }
